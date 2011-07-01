@@ -1,8 +1,16 @@
-PyiTunes
-========
+Python iTunes
+=============
 
 A simple python wrapper to access iTunes Store API http://www.apple.com/itunes/affiliates/resources/documentation/itunes-store-web-service-search-api.html
 
+Installation
+------------
+
+Pypi package available at http://pypi.python.org/pypi/python-itunes/1.0
+
+::
+
+  $ easy_install python-itunes
 Examples
 --------
 
