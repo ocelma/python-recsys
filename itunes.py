@@ -409,7 +409,9 @@ class Track(Item):
         if json.has_key('trackPrice') and json['trackPrice'] is not None:
             self.price = round(json['trackPrice'], 4)
         self.number = json.get('trackNumber', None)
-        self.duration = round(json.get('trackTimeMillis', 0.0)/1000.0, 2)
+        self.duration = None
+        if json.has_key('trackTimeMillis') and json['trackTimeMillis'] is not None:
+            self.duration = round(json.get('trackTimeMillis', 0.0)/1000.0, 2)
 
         self._set_artist(json)
         self._set_album(json)
