@@ -12,6 +12,12 @@ Pypi package available at http://pypi.python.org/pypi/python-itunes/1.0
 
   $ easy_install python-itunes
 
+Or download the code from https://github.com/ocelma/python-itunes/archives/master and then
+
+::
+
+  $ python setup.py install
+
 Examples
 --------
 
