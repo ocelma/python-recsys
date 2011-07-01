@@ -11,6 +11,7 @@ Pypi package available at http://pypi.python.org/pypi/python-itunes/1.0
 ::
 
   $ easy_install python-itunes
+
 Examples
 --------
 
