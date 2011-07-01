@@ -270,9 +270,9 @@ class Item(object):
     def __repr__(self):
         if not self.name:
             if self.json.has_key('collectionName'):
-                self.set_name(self.json['collectionName'])
+                self._set_name(self.json['collectionName'])
             elif self.json.has_key('artistName'):
-                self.set_name(self.json['artistName'])
+                self._set_name(self.json['artistName'])
         return self.name.encode('utf8')
 
     def __eq__(self, other):
@@ -281,11 +281,8 @@ class Item(object):
     def __ne__(self, other):
         return self.id != other.id
 
-    def set_name(self, name):
+    def _set_name(self, name):
         self.name = name
-
-    def set_url(self, url):
-        self.url = url
 
     # GETTERs
     def get_id(self):
