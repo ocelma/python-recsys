@@ -440,6 +440,9 @@ class Track(Item):
     def get_artist(self):
         return self.artist
 
+    def get_price(self):
+        return self.price
+
 # Audiobook
 class Audiobook(Album):
     """ Audiobook class """
@@ -500,8 +503,6 @@ class Software(Track):
     # GETTERs
     def get_version(self):
         return self.version
-    def get_price(self):
-        return self.price
     def get_description(self):
         return self.description
     def get_screenshots(self):
