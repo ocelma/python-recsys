@@ -557,17 +557,17 @@ def get_md5(text):
     return hash.hexdigest()
 
 #SEARCHES
-def search_track(query, limit=100):
-    return Search(query=query, media='music', entity='song', limit=limit).get()
+def search_track(query, limit=100, store=COUNTRY):
+    return Search(query=query, media='music', entity='song', limit=limit, country=store).get()
 
-def search_album(query, limit=100):
-    return Search(query=query, media='music', entity='album', limit=limit).get()
+def search_album(query, limit=100, store=COUNTRY):
+    return Search(query=query, media='music', entity='album', limit=limit, country=store).get()
 
-def search_artist(query, limit=100):
-    return Search(query=query, media='music', entity='musicArtist', limit=limit).get()
+def search_artist(query, limit=100, store=COUNTRY):
+    return Search(query=query, media='music', entity='musicArtist', limit=limit, country=store).get()
 
-def search(query, media='all', limit=500):
-    return Search(query=query, media=media, limit=limit).get()
+def search(query, media='all', limit=100, store=COUNTRY):
+    return Search(query=query, media=media, limit=limit, country=store).get()
 
 #LOOKUP
 def lookup(id):
