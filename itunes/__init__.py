@@ -390,6 +390,12 @@ class Album(Item):
     def get_copyright(self):
         return self.copyright
 
+    def get_price(self):
+        return self.price
+
+    def get_track_count(self):
+        return self.track_count
+
     def get_artist(self):
         return self.artist
 
