@@ -24,6 +24,11 @@ def test_search_album():
 def test_search_artist():
     assert_equal(itunes.search_artist('u2')[0].get_id(), U2_ID)
 
+def test_search_artist_store():
+    U2_URL_ES = 'http://itunes.apple.com/es/artist/u2/id78500?l=en&uo=4'
+    assert_equal(itunes.search_artist('u2', store='ES')[0].get_id(), U2_ID)
+    assert_equal(itunes.search_artist('u2', store='ES')[0].get_url(), U2_URL_ES)
+
 #LOOKUPS
 def test_lookup_track():
     item = itunes.lookup(U2_ONE_ID)
