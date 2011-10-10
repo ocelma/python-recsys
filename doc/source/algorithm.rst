@@ -65,7 +65,7 @@ Parameters:
     *savefile*: Output file to store SVD transformation (:math:`U, \Sigma, V^T` vectors)
 
 Predictions
-~~~~~~~~~~~~~~~
+~~~~~~~~~~~
 
 To predict a *rating*, :math:`\hat{r}_{ui}`, SVD class reconstructs the original matrix, :math:`M^\prime = U \Sigma_k V^T`
 
@@ -78,6 +78,17 @@ equals to:
 .. math:: 
 
     \hat{r}_{ui} = M^\prime_{ij}
+
+Here are the RMSE and MAE values for the Movielens 10M dataset (Train: 8,000,043 ratings, and Test: 2,000,011), using 5-fold cross validation, and different K values or factors (10, 20, 50, and 100) for SVD:
+
++-----------+--------+--------+--------+---------+
+|        K  | **10** | **20** | **50** | **100** |
++-----------+--------+--------+--------+---------+
+| **RMSE**  | 0.87224| 0.86774| 0.86557| 0.86628 |
++-----------+--------+--------+--------+---------+
+| **MAE**   | 0.67114| 0.66719| 0.66484| 0.66513 |
++-----------+--------+--------+--------+---------+
+
 
 Recommendations
 ~~~~~~~~~~~~~~~
@@ -147,7 +158,7 @@ The evaluation uses the `Movielens`_ 1M ratings dataset, splitting the train/tes
 Results
 ~~~~~~~
 
-# Ratings in the Test dataset: 209,908
+Movielens 1M dataset (number of ratings in the Test dataset: 209,908):
 
 +-----------+--------+----------------+
 |           | **SVD**| **SVD Neigh.** | 
@@ -156,3 +167,4 @@ Results
 +-----------+--------+----------------+
 | **MAE**   | 0.71703| 0.684173       |
 +-----------+--------+----------------+
+
