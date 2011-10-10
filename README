@@ -10,8 +10,8 @@ INSTALLATION NOTES
 
 1) Dependencies
 
-pyrecsys is build on top of Divisi2, with csc-pysparse (Divisi2 also requires NumPy).
-pyrecsys also requires SciPy.
+python-recsys is build on top of Divisi2, with csc-pysparse (Divisi2 also requires NumPy).
+python-recsys also requires SciPy.
 
 To install the dependencies do something like this (Ubuntu):
 
@@ -25,12 +25,12 @@ To install the dependencies do something like this (Ubuntu):
 
 2) Download
 
-Download pyrecsys from github: https://github.com/ocelma/python-recsys
+Download python-recsys from github: https://github.com/ocelma/python-recsys
 
 3) Install
 
-    tar xvfz pyrecsys.tar.gz
-    cd pyrecsys
+    tar xvfz python-recsys.tar.gz
+    cd python-recsys
     sudo python setup.py install
 
 ..and you're all set! (hopefully)

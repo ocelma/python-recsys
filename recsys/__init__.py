@@ -1,5 +1,5 @@
-__name__ = "pyrecsys"
-__doc__ = "pyrecsys: A simple python recommender system"
+__name__ = "recsys"
+__doc__ = "python-recsys: A simple python recommender system"
 __author__ = "Oscar Celma"
 __version__ = "0.1"
 __license__ = "GPL"

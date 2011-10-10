@@ -43,8 +43,8 @@ Install
 
 ::
 
-    tar xvfz pyrecsys.tar.gz
-    cd pyrecsys
+    tar xvfz python-recsys.tar.gz
+    cd python-recsys
     sudo python setup.py install
 
 Documentation

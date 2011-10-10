@@ -1,7 +1,7 @@
 Tests
 =====
 
-**pyrecsys** provides a set of tests, to ensure that my ugly code is not
+**python-recsys** provides a set of tests, to ensure that my ugly code is not
 broken each time I pretend to implement something new.
 
 Yet, I've found out that sniffing at those (nose) tests is good way to understand how to use this
@@ -23,7 +23,7 @@ To run the set of tests (and see some output ugly *print's*) just do:
 
 .. code-block:: python
 
-    cd PATH_TO/pyrecsys
+    cd PATH_TO/python-recsys
     nosetests -s -v
 
 .. note::
@@ -32,7 +32,7 @@ To run the set of tests (and see some output ugly *print's*) just do:
     
     .. code-block:: python
 
-        PATH_TO/pyrecsys/recsys/tests/data/movielens
+        PATH_TO/python-recsys/recsys/tests/data/movielens
 
 .. _`Movielens`: http://www.grouplens.org/node/73
 
@@ -44,7 +44,7 @@ If you want to run only one package tests, do:
 
 .. code-block:: python
 
-    cd PATH_TO/pyrecsys
+    cd PATH_TO/python-recsys
     nosetests -s -v tests.test_evaluation
 
 
