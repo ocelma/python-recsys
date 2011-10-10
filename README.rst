@@ -47,3 +47,24 @@ Install
     cd pyrecsys
     sudo python setup.py install
 
+Documentation
+~~~~~~~~~~~~~
+
+Documentation and examples available `here`_.
+
+.. _`here`: http://ocelma.net/software/python-recsys/build/html
+
+To create the HTML documentation files from doc/source do:
+
+::
+
+    cd doc
+    make html
+
+HTML files are created here: 
+
+::
+
+    doc/build/html/index.html
+
+
