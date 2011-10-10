@@ -1,0 +1,23 @@
+import os.path
+try:
+    from setuptools import setup, Extension
+except ImportError:
+    from distutils.core import setup, Extension
+
+VERSION = "0.1"
+
+setup(
+    name = "pyrecsys",
+    version = VERSION,
+    description="A simple recommender system library",
+    author='Oscar Celma',
+    author_email='ocelma@bmat.com',
+    maintainer='Oscar Celma',
+    maintainer_email='ocelma@bmat.com',
+    license = "http://www.gnu.org/copyleft/gpl.html",
+    platforms = ["any"],    
+    url="http://www.dtic.upf.edu/~ocelma/software/pyrecsys",
+    package_dir={'recsys':'recsys'},
+    packages=['recsys', 'recsys.algorithm', 'recsys.datamodel', 'recsys.evaluation'],
+    install_requires = ["numpy", "scipy", "divisi2", "csc-pysparse"],
+)

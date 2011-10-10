@@ -1,0 +1,57 @@
+Installation
+============
+
+Dependencies
+~~~~~~~~~~~~
+
+**pyrecsys** is build on top of `Divisi2`_, with csc-pysparse (Divisi2 also requires `NumPy`_).
+
+.. _`Divisi2`: http://csc.media.mit.edu/docs/divisi2/install.html
+.. _`NumPy`: http://numpy.scipy.org
+
+**pyrecsys** also requires `SciPy`_.
+
+.. _`SciPy`: http://numpy.scipy.org
+
+To install the dependencies do something like this (Ubuntu):
+
+.. code-block:: python
+
+    sudo apt-get install python-scipy python-numpy
+    sudo apt-get install python-pip
+    sudo pip install divisi2 csc-pysparse
+
+    # If you don't have pip installed 
+    # (i.e. the last command, sudo pip install divisi2 csc-pysparse, fails)
+    # then do:
+    # sudo easy_install csc-pysparse
+    # sudo easy_install divisi2
+
+
+.. note::
+    If you get an error like this one while compiling csc-pysparse:
+
+    .. error::
+        (...) error: Python.h: No such file or directory"
+
+    then you need to also install python-dev package:
+
+    .. code-block:: python
+
+        sudo apt-get install python-dev
+
+Download
+~~~~~~~~
+
+Download **pyrecsys** from `github`_.
+
+.. _`github`: http://github.com/ocelma/pyrecsys
+
+Install
+~~~~~~~
+
+.. code-block:: python
+
+    tar xvfz pyrecsys.tar.gz
+    cd pyrecsys
+    sudo python setup.py install

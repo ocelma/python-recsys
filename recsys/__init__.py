@@ -1,0 +1,9 @@
+__name__ = "pyrecsys"
+__doc__ = "pyrecsys: A simple python recommender system"
+__author__ = "Oscar Celma"
+__version__ = "0.1"
+__license__ = "GPL"
+__maintainer__ = "Oscar Celma"
+__email__ = "ocelma@gmail.com"
+__status__ = "Beta"
+__all__ = ['algorithm', 'datamodel', 'evaluation']

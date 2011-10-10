@@ -1,0 +1,36 @@
+=============
+python-recsys
+=============
+
+A python library for implementing a recommender system.
+
+==================
+INSTALLATION NOTES
+==================
+
+1) Dependencies
+
+pyrecsys is build on top of Divisi2, with csc-pysparse (Divisi2 also requires NumPy).
+pyrecsys also requires SciPy.
+
+To install the dependencies do something like this (Ubuntu):
+
+    sudo apt-get install python-scipy
+    sudo apt-get install python-numpy
+    sudo pip install divisi2 csc-pysparse
+
+    # If you don't have pip installed then do:
+    # sudo easy_install csc-pysparse
+    # sudo easy_install divisi2
+
+2) Download
+
+Download pyrecsys from github: https://github.com/ocelma/python-recsys
+
+3) Install
+
+    tar xvfz pyrecsys.tar.gz
+    cd pyrecsys
+    sudo python setup.py install
+
+..and you're all set! (hopefully)
