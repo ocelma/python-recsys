@@ -172,9 +172,6 @@ class SVD(Algorithm):
             Divisi2 divides each entry by the geometric mean of its row norm and its column norm. 
             The rows and columns don't actually become unit vectors, but they all become closer to unit vectors.
             """
-            if VERBOSE:
-                sys.stdout.write('Pre-normalization: %s\n' % pre_normalize)
-
             if pre_normalize == 'tfidf':
                 matrix = matrix.normalize_tfidf() #TODO By default, treats the matrix as terms-by-documents; 
                                                   # pass cols_are_terms=True if the matrix is instead documents-by-terms.
