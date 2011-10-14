@@ -115,22 +115,39 @@ class Data:
                 if not data:
                     raise TypeError('Data is empty or None!')
                 if not format:
-                    value, row_id, col_id = data
+                    # Default value is 1
+                    try:
+                        value, row_id, col_id = data
+                    except ValueError:
+                        value = 1
+                        row_id, col_id = data
                 else:
-                    value = data[format['value']]
-                    row_id = data[format['row']]
-                    col_id = data[format['col']]
-                    if format.has_key('ids') and (format['ids'] == int or format['ids'] == 'int'):
-                        row_id = int(row_id)
-                        col_id = int(col_id)
-                if float(value):
+                    try:
+                        # Default value is 1
+                        try:
+                            value = data[format['value']]
+                        except ValueError:
+                            value = 1
+                        row_id = data[format['row']]
+                        col_id = data[format['col']]
+                        if format.has_key('ids') and (format['ids'] == int or format['ids'] == 'int'):
+                            row_id = int(row_id)
+                            col_id = int(col_id)
+                    except IndexError:
+                        print 'Error while reading: %s' % data
+                        #raise IndexError('while reading %s' % data)
+                try:
                     self.add_tuple((float(value), row_id, col_id))
+                except ValueError:
+                    raise ValueError('%s is not a float, while reading %s' % (value, data))
                 i += 1
                 if VERBOSE:
                     if i % 100000 == 0:
                         sys.stdout.write('.')
                     if i % 1000000 == 0:
                         sys.stdout.write('|')
+                    if i % 10000000 == 0:
+                        sys.stdout.write(' (%d M)\n' % int(i/1000000))
             if VERBOSE:
                 sys.stdout.write('\n')
 
