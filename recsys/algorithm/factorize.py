@@ -62,9 +62,9 @@ class SVD(Algorithm):
         :type filename: string
         """
         try:
-            zip = zipfile.ZipFile(filename)
+            zip = zipfile.ZipFile(filename, allowZip64=True)
         except:
-            zip = zipfile.ZipFile(filename + '.zip')
+            zip = zipfile.ZipFile(filename + '.zip', allowZip64=True)
         #Python 2.6 only:
         #self._U = loads(zip.open('.U').read())
         #self._S = loads(zip.open('.S').read())
@@ -172,9 +172,6 @@ class SVD(Algorithm):
             Divisi2 divides each entry by the geometric mean of its row norm and its column norm. 
             The rows and columns don't actually become unit vectors, but they all become closer to unit vectors.
             """
-            if VERBOSE:
-                sys.stdout.write('Pre-normalization: %s\n' % pre_normalize)
-
             if pre_normalize == 'tfidf':
                 matrix = matrix.normalize_tfidf() #TODO By default, treats the matrix as terms-by-documents; 
                                                   # pass cols_are_terms=True if the matrix is instead documents-by-terms.
