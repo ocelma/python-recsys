@@ -62,9 +62,9 @@ class SVD(Algorithm):
         :type filename: string
         """
         try:
-            zip = zipfile.ZipFile(filename)
+            zip = zipfile.ZipFile(filename, allowZip64=True)
         except:
-            zip = zipfile.ZipFile(filename + '.zip')
+            zip = zipfile.ZipFile(filename + '.zip', allowZip64=True)
         #Python 2.6 only:
         #self._U = loads(zip.open('.U').read())
         #self._S = loads(zip.open('.S').read())
@@ -109,7 +109,7 @@ class SVD(Algorithm):
         zip = filename
         if not filename.endswith('.zip') and not filename.endswith('.ZIP'):
             zip += '.zip'
-        fp = zipfile.ZipFile(zip, 'w')
+        fp = zipfile.ZipFile(zip, 'w', allowZip64=True)
         #options
         fp.write(filename=filename + '.config', arcname='README')
         os.remove(filename + '.config')
