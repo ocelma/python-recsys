@@ -126,6 +126,7 @@ class Algorithm(object):
             raise ValueError('No data set. Matrix is empty!')
         if not self._matrix.empty() or not self._matrix_and_data_aligned:
             self.create_matrix()
+
         if min_values:
             if VERBOSE:
                 sys.stdout.write('Updating matrix: squish to at least %s values\n' % min_values)
