@@ -18,6 +18,13 @@ Or download the code from https://github.com/ocelma/python-itunes/archives/maste
 
   $ python setup.py install
 
+.. note::
+
+  If you're using python version <= 2.5 you'll need to install simplejson. E.g:
+
+  $ easy_install simplejson
+
+
 Examples
 --------
 
