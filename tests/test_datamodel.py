@@ -53,7 +53,18 @@ def test_data_extend():
     assert_equal(len(data), 4)
 
 def test_data_add_tuple():
+    VALUE = 4.0
+    tuple = (VALUE, 'row_id', 'col_id')
+    data = Data()
+    data.add_tuple(tuple)
+    assert_equal(data[0][0], VALUE)
+
+def test_data_add_tuple_error1():
     tuple = (4, 'row_id', 'col_id', 'another error value!')
+    assert_raises(ValueError, data.add_tuple, tuple)
+
+def test_data_add_tuple_error2():
+    tuple = ('row_id', 'col_id')
     assert_raises(ValueError, data.add_tuple, tuple)
 
 #USER tests

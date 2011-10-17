@@ -115,6 +115,7 @@ class Data:
                 if not data:
                     raise TypeError('Data is empty or None!')
                 if not format:
+                    # Default value is 1
                     try:
                         value, row_id, col_id = data
                     except ValueError:
@@ -122,18 +123,13 @@ class Data:
                         row_id, col_id = data
                 else:
                     try:
+                        # Default value is 1
                         try:
                             value = data[format['value']]
-                        except KeyError:
+                        except ValueError:
                             value = 1
-                        try:
-                            row_id = data[format['row']]
-                        except KeyError:
-                            row_id = data[0]
-                        try:
-                            col_id = data[format['col']]
-                        except KeyError:
-                            col_id = data[1]
+                        row_id = data[format['row']]
+                        col_id = data[format['col']]
                         if format.has_key('ids') and (format['ids'] == int or format['ids'] == 'int'):
                             row_id = int(row_id)
                             col_id = int(col_id)
