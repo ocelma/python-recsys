@@ -112,6 +112,7 @@ class Data:
             i = 0 
             for line in codecs.open(path, 'r', 'utf8'):
                 data = line.strip('\r\n').split(sep)
+                value = None
                 if not data:
                     raise TypeError('Data is empty or None!')
                 if not format:
@@ -134,7 +135,8 @@ class Data:
                             row_id = int(row_id)
                             col_id = int(col_id)
                     except IndexError:
-                        print 'Error while reading: %s' % data
+                        print 'Error while reading: %s' % data #Just ignore that line
+                        continue
                         #raise IndexError('while reading %s' % data)
                 try:
                     self.add_tuple((float(value), row_id, col_id))

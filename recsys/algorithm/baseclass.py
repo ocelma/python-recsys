@@ -8,7 +8,7 @@
 import sys
 #from numpy import sum
 from numpy.linalg import norm
-from scipy.cluster.vq import kmeans#, kmeans2 #for kmeans method
+from scipy.cluster.vq import kmeans
 from scipy import array #for kmeans method
 try:
     import divisi2
@@ -31,7 +31,7 @@ class Algorithm(object):
     def __init__(self):
         self._data = Data()
         self._matrix = SparseMatrix()
-        self._matrix_similarity = None #self-similarity matrix (for either the rows or the cols of the input Matrix)
+        self._matrix_similarity = None #self-similarity matrix (only for the input Matrix rows)
         self._matrix_and_data_aligned = False #both Matrix and Data contain the same info?
 
     def __len__(self):
