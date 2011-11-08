@@ -113,10 +113,15 @@ class SVD(Algorithm):
         #options
         fp.write(filename=filename + '.config', arcname='README')
         os.remove(filename + '.config')
-        #matrices
-        for extension in ['.U', '.S', '.V', '.shifts.row', '.shifts.col', '.shifts.total']:
+        #Store matrices
+        for extension in ['.U', '.S', '.V']:
             fp.write(filename=filename + extension, arcname=extension)
             os.remove(filename + extension)
+        #Store mean center shifts
+        if self._shifts:
+            for extension in ['.shifts.row', '.shifts.col', '.shifts.total']:
+                fp.write(filename=filename + extension, arcname=extension)
+                os.remove(filename + extension)
 
     def _reconstruct_similarity(self, post_normalize=True, force=True):
         if not self.get_matrix_similarity() or force:
