@@ -100,7 +100,12 @@ Loading a train/test dataset from a file. This example actually reads the Moviel
     filename = './data/movielens/ratings.dat'
 
     data = Data()
-    format = {'col':0, 'row':1, 'value':2, 'ids': 'int'} # 'ids':int indicates that USER and ITEM Ids are integers
+    format = {'col':0, 'row':1, 'value':2, 'ids': 'int'}
+        # About format parameter:
+        #   'row': 1 -> Rows in matrix come from column 1 in ratings.dat file
+        #   'col': 0 -> Cols in matrix come from column 0 in ratings.dat file
+        #   'value': 2 -> Values (Mij) in matrix come from column 2 in ratings.dat file
+        #   'ids': int -> Ids (row and col ids) are integers (not strings)
     data.load(filename, sep='::', format=format)
     train, test = data.split_train_test(percent=80) # 80% train, 20% test
 

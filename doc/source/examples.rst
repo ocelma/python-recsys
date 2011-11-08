@@ -26,6 +26,12 @@ Simple SVD
     data = Data()
     print 'Loading dataset %s' % sys.argv[1]
     data.load(sys.argv[1], sep='::', format={'col':0, 'row':1, 'value':2, 'ids':int})
+        # About format parameter:
+        #   'row': 1 -> Rows in matrix come from column 1 in ratings.dat file
+        #   'col': 0 -> Cols in matrix come from column 0 in ratings.dat file
+        #   'value': 2 -> Values (Mij) in matrix come from column 2 in ratings.dat file
+        #   'ids': int -> Ids (row and col ids) are integers (not strings)
+
     #Train & Test data
     train, test = data.split_train_test(percent=PERCENT_TRAIN)
 
