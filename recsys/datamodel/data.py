@@ -58,7 +58,16 @@ class Data:
         """
         #E.g: tuple = (25, "ocelma", "u2") -> "ocelma has played u2 25 times"
         if not len(tuple) == 3:
-            raise ValueError('Tuple format not correct (should be: <rating, user, item>)')
+            raise ValueError('Tuple format not correct (should be: <value, row_id, col_id>)')
+        value, row_id, col_id = tuple
+        if not value and value != 0:
+            raise ValueError('Value is empty %s' % (tuple,))
+        if isinstance(value, basestring):
+            raise ValueError('Value %s is a string (must be an int or float) %s' % (value, tuple,))
+        if row_id is None or row_id == '':
+            raise ValueError('Row id is empty %s' % (tuple,))
+        if col_id is None or col_id == '':
+            raise ValueError('Col id is empty %s' % (tuple,))
         self._data.append(tuple)
 
     def split_train_test(self, percent=80, shuffle_data=True):

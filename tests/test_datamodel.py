@@ -59,12 +59,44 @@ def test_data_add_tuple():
     data.add_tuple(tuple)
     assert_equal(data[0][0], VALUE)
 
-def test_data_add_tuple_error1():
+def test_data_add_tuple_error_format():
     tuple = (4, 'row_id', 'col_id', 'another error value!')
     assert_raises(ValueError, data.add_tuple, tuple)
 
-def test_data_add_tuple_error2():
+def test_data_add_tuple_error_format2():
     tuple = ('row_id', 'col_id')
+    assert_raises(ValueError, data.add_tuple, tuple)
+
+def test_data_add_tuple_value_none():
+    tuple = (None, 'row_id', 'col_id')
+    assert_raises(ValueError, data.add_tuple, tuple)
+
+def test_data_add_tuple_value_empty_string():
+    tuple = ('', 'row_id', 'col_id')
+    assert_raises(ValueError, data.add_tuple, tuple)
+
+def test_data_add_tuple_value_string():
+    tuple = ('1.0', 'row_id', 'col_id')
+    assert_raises(ValueError, data.add_tuple, tuple)
+
+#def test_data_add_tuple_zero_value():
+#    tuple = (0, 'row_id', 'col_id')
+#    assert_raises(ValueError, data.add_tuple, tuple)
+
+def test_data_add_tuple_row_id_empty():
+    tuple = (1, '', 'col_id')
+    assert_raises(ValueError, data.add_tuple, tuple)
+
+def test_data_add_tuple_col_id_empty():
+    tuple = (1, 'row_id', '')
+    assert_raises(ValueError, data.add_tuple, tuple)
+
+def test_data_add_tuple_row_id_none():
+    tuple = (1, None, 'col_id')
+    assert_raises(ValueError, data.add_tuple, tuple)
+
+def test_data_add_tuple_col_id_none():
+    tuple = (1, 'row_id', None)
     assert_raises(ValueError, data.add_tuple, tuple)
 
 #USER tests
