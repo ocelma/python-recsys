@@ -418,9 +418,14 @@ class Track(Item):
         self.duration = None
         if json.has_key('trackTimeMillis') and json['trackTimeMillis'] is not None:
             self.duration = round(json.get('trackTimeMillis', 0.0)/1000.0, 2)
-
-        self._set_artist(json)
-        self._set_album(json)
+        try:
+            self._set_artist(json)
+        except KeyError:
+            self.artist = None
+        try:
+            self._set_album(json)
+        except KeyError:
+            self.album = None
 
     def _set_artist(self, json):
         id = json['artistId']
