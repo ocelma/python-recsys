@@ -382,9 +382,10 @@ class Album(Item):
         self._set_artist(json)
 
     def _set_artist(self, json):
-        id = json['artistId']
-        self.artist = Artist(id)
-        self.artist._set(json)
+        if json.get('artistId'):
+            id = json['artistId']
+            self.artist = Artist(id)
+            self.artist._set(json)
 
     # GETTERs
     def get_amg_id(self):
@@ -426,9 +427,10 @@ class Track(Item):
         self._set_album(json)
 
     def _set_artist(self, json):
-        id = json['artistId']
-        self.artist = Artist(id)
-        self.artist._set(json)
+        if json.get('artistId'):
+            id = json['artistId']
+            self.artist = Artist(id)
+            self.artist._set(json)
 
     def _set_album(self, json):
         if json.has_key('collectionId'):
