@@ -1,4 +1,4 @@
-Python iTunes
+hello Python iTunes
 =============
 
 A simple python wrapper to access iTunes Store API http://www.apple.com/itunes/affiliates/resources/documentation/itunes-store-web-service-search-api.html
