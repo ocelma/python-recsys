@@ -382,6 +382,7 @@ class Album(Item):
         self._set_artist(json)
 
     def _set_artist(self, json):
+        self.artist = None
         if json.get('artistId'):
             id = json['artistId']
             self.artist = Artist(id)
@@ -432,6 +433,7 @@ class Track(Item):
             self.album = None
 
     def _set_artist(self, json):
+        self.artist = None
         if json.get('artistId'):
             id = json['artistId']
             self.artist = Artist(id)
