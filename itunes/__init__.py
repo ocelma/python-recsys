@@ -4,7 +4,10 @@ import os
 import urllib2, urllib
 import urlparse
 import re
-import simplejson
+try: 
+    import simplejson as json
+except ImportError: 
+    import json
 try:
     from hashlib import md5
 except ImportError:
@@ -80,7 +83,7 @@ class _Request(object):
                 response = self._get_cached_response()
             else:
                 response = self._download_response()
-            return simplejson.loads(response)
+            return json.loads(response)
         except urllib2.HTTPError, e:
             raise self._get_error(e.fp.read())
 
@@ -379,9 +382,10 @@ class Album(Item):
         self._set_artist(json)
 
     def _set_artist(self, json):
-        id = json['artistId']
-        self.artist = Artist(id)
-        self.artist._set(json)
+        if json.get('artistId'):
+            id = json['artistId']
+            self.artist = Artist(id)
+            self.artist._set(json)
 
     # GETTERs
     def get_amg_id(self):
@@ -428,9 +432,10 @@ class Track(Item):
             self.album = None
 
     def _set_artist(self, json):
-        id = json['artistId']
-        self.artist = Artist(id)
-        self.artist._set(json)
+        if json.get('artistId'):
+            id = json['artistId']
+            self.artist = Artist(id)
+            self.artist._set(json)
 
     def _set_album(self, json):
         if json.has_key('collectionId'):
