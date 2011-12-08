@@ -141,12 +141,16 @@ class Data:
                         row_id = data[format['row']]
                         col_id = data[format['col']]
                         if format.has_key('ids') and (format['ids'] == int or format['ids'] == 'int'):
-                            row_id = int(row_id)
-                            col_id = int(col_id)
+                            try:
+                                row_id = int(row_id)
+                            except: pass
+                            try:
+                                col_id = int(col_id)
+                            except: pass
                     except IndexError:
                         print 'Error while reading: %s' % data #Just ignore that line
-                        continue
                         #raise IndexError('while reading %s' % data)
+                        continue
                 try:
                     self.add_tuple((float(value), row_id, col_id))
                 except ValueError:
