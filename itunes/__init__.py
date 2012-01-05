@@ -179,7 +179,7 @@ class _BaseObject(object):
 class Search(_BaseObject):
     """ Search iTunes Store """
 
-    def __init__(self, query, country=COUNTRY, media='all', entity=None, attribute=None, limit=50, lang='en_us', version=API_VERSION, explicit='Yes'):
+    def __init__(self, query, country=COUNTRY, media='all', entity=None, attribute=None, offset=0, limit=50, lang='en_us', version=API_VERSION, explicit='Yes'):
         _BaseObject.__init__(self, 'search')
 
         self._search_terms = dict()
@@ -191,6 +191,8 @@ class Search(_BaseObject):
         if attribute:
             self._search_terms['attribute'] = attribute # The attribute you want to search for in the stores, relative to the specified media type
         self._search_terms['limit'] = limit       # Results limit
+	if offset > 0:
+            self._search_terms['offset'] = offset
         self._search_terms['lang'] = lang         # The language, English or Japanese, you want to use when returning search results
         self._search_terms['version'] = version   # The search result key version you want to receive back from your search
         self._search_terms['explicit'] = explicit # A flag indicating whether or not you want to include explicit content in your search results
@@ -575,17 +577,17 @@ def get_md5(text):
     return hash.hexdigest()
 
 #SEARCHES
-def search_track(query, limit=100, store=COUNTRY):
-    return Search(query=query, media='music', entity='song', limit=limit, country=store).get()
+def search_track(query, limit=100, offset=0, store=COUNTRY):
+    return Search(query=query, media='music', entity='song', offset=offset, limit=limit, country=store).get()
 
-def search_album(query, limit=100, store=COUNTRY):
-    return Search(query=query, media='music', entity='album', limit=limit, country=store).get()
+def search_album(query, limit=100, offset=0, store=COUNTRY):
+    return Search(query=query, media='music', entity='album', limit=limit, offset=offset, country=store).get()
 
-def search_artist(query, limit=100, store=COUNTRY):
-    return Search(query=query, media='music', entity='musicArtist', limit=limit, country=store).get()
+def search_artist(query, limit=100, offset=0, store=COUNTRY):
+    return Search(query=query, media='music', entity='musicArtist', limit=limit, offset=offset, country=store).get()
 
-def search(query, media='all', limit=100, store=COUNTRY):
-    return Search(query=query, media=media, limit=limit, country=store).get()
+def search(query, media='all', limit=100, offset=0, store=COUNTRY):
+    return Search(query=query, media=media, limit=limit, offset=offset, country=store).get()
 
 #LOOKUP
 def lookup(id):
