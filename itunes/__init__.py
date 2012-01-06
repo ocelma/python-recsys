@@ -182,6 +182,14 @@ class Search(_BaseObject):
     def __init__(self, query, country=COUNTRY, media='all', entity=None,
                  attribute=None, offset=0, limit=50, order=None,
                  lang='en_us', version=API_VERSION, explicit='Yes'):
+        """
+        @param order: The results are returned in this order. Possible values
+            are 'rank' or 'popular.'
+        @param offset: Return search results starting at this offset. Useful
+            because there is a cap of 500 results per query.
+        @param limit: Return no more than this many results. Regardless of what
+            you specify, iTunes will never return more than 500 results.
+        """
         _BaseObject.__init__(self, 'search')
 
         self._search_terms = dict()
