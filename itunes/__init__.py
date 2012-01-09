@@ -29,6 +29,12 @@ HOST_NAME = 'http://itunes.apple.com/'
 __cache_enabled = False  # Enable cache? if set to True, make sure that __cache_dir exists! (e.g. $ mkdir ./cache)
 __cache_dir = './cache'  # Set cache directory
 
+
+
+def clean_json(data):
+   return data.replace('\\\\', r'//').replace(r"\'", '\"').replace(r'\"', '').replace(r'\u','')
+ 
+
 class ServiceException(Exception):
     """Exception related to the web service."""
     
@@ -83,6 +89,7 @@ class _Request(object):
                 response = self._get_cached_response()
             else:
                 response = self._download_response()
+            response = clean_json(response)
             return json.loads(response)
         except urllib2.HTTPError, e:
             raise self._get_error(e.fp.read())
