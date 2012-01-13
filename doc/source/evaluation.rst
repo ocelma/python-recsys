@@ -203,7 +203,7 @@ Using explicit ranking information:
     GT_RANKING = [('classical', 50.0), ('piano', 100.0), ('baroque', 25.0), ('instrumental', 25.0)]
     spearman = SpearmanRho()
     spearman.load(GT_RANKING, TEST_RANKING)
-    spearman.compute() #returns 0.55
+    spearman.compute() #returns 0.5
 
 .. code-block:: python
 
@@ -211,7 +211,7 @@ Using explicit ranking information:
 
     DATA_PRED = [(3, 2.3), (1, 0.9), (5, 4.9), (2, 0.9), (3, 1.5)]
     spearman = SpearmanRho(DATA_PRED)
-    spearman.compute() #returns 0.95
+    spearman.compute() #returns 0.947368
 
 Kendall--tau
 ------------

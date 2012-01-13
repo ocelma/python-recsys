@@ -9,7 +9,9 @@ TODO
 
 * evaluation: add DCG
 
-* Mention other Python approaches:
+* switch to Pycluster to compute kmeans? http://pypi.python.org/pypi/Pycluster 
+
+* Mention other Python approaches somewhere in the documentation:
 
   * pysuggest http://code.google.com/p/pysuggest/
 
@@ -18,3 +20,4 @@ TODO
   * crab https://github.com/marcelcaraciolo/crab
 
   * pyflix http://pyflix.python-hosting.com/
+
