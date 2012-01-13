@@ -6,4 +6,4 @@ __license__ = "GPL"
 __maintainer__ = "Oscar Celma"
 __email__ = "ocelma@gmail.com"
 __status__ = "Beta"
-__all__ = ['algorithm', 'datamodel', 'evaluation']
+__all__ = ['algorithm', 'datamodel', 'evaluation', 'utils']
