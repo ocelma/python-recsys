@@ -89,7 +89,7 @@ Last.fm
 
     $ cd /tmp/
     $ wget http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm360K-svd-example.tar.gz
-    $ tar xvzf http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm360K-svd-example.tar.gz
+    $ tar xvzf lastfm360K-svd-example.tar.gz
 
 and then just copy these 10 lines of code!
   
