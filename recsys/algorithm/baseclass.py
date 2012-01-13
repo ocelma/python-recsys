@@ -229,8 +229,10 @@ class Algorithm(object):
         else:
             point = self.get_matrix().get_col(id)
         points = []
+        points_id = []
         for i in point.nonzero_entries():
             label = point.label(i)
+            points_id.append(label)
             if not is_row:
                 points.append(self.get_matrix().get_row(label))
             else:
@@ -254,7 +256,7 @@ class Algorithm(object):
                 clusters[cluster] = dict()
                 clusters[cluster]['centroid'] = centroids[cluster]
                 clusters[cluster]['points'] = []
-            clusters[cluster]['points'].append(points[i])
+            clusters[cluster]['points'].append(points_id[i])
             i += 1
         return clusters
 
