@@ -208,8 +208,9 @@ def test_kmeans_kinit():
 
 def test_kmeans():
     item_ids = [1, 48, 3114, 25, 44, 3142, 617, 1193, 3408]
-    # K-means based the list of points of a given id. E.g.: user ID 1 -> clustering the movies this user has rated
-    clusters = svd.kmeans(USERID1, is_row=False)
+    # K-means based on a list of ids
+    clusters = svd.kmeans(item_ids, k=3, are_rows=True)
+    #print clusters
     for cluster in clusters.values():
         for other_cluster in clusters.values():
             print svd._cosine(cluster['centroid'], other_cluster['centroid'])
@@ -217,8 +218,7 @@ def test_kmeans():
         for item_id in item_ids:
             print item_id, svd._cosine(cluster['centroid'], svd._U.row_named(item_id))
         print
-    # K-means based on a list of ids
-    clusters = svd._kmeans(item_ids, k=3, are_rows=True)
+    clusters = svd.kmeans(USERID1, are_rows=False)
     print clusters
 
 def test_add_tuple():
