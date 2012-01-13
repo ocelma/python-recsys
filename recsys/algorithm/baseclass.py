@@ -254,7 +254,7 @@ class Algorithm(object):
                 clusters[cluster] = dict()
                 clusters[cluster]['centroid'] = centroids[cluster]
                 clusters[cluster]['points'] = []
-            clusters[cluster]['points'].append(ids[i])
+            clusters[cluster]['points'].append(points[i])
             i += 1
         return clusters
 
