@@ -12,7 +12,7 @@ def setup():
     svdlibc = SVDLIBC(os.path.join(MOVIELENS_DATA_PATH, 'ratings.dat'))
 
 def teardown():
-    pass
+    svdlibc.remove_files()
 
 def test_to_sparse_matrix():
     svdlibc.to_sparse_matrix(sep='::', format={'col':0, 'row':1, 'value':2, 'ids': int})
