@@ -24,7 +24,8 @@ class SVDLIBC(object):
             self._svd_prefix = prefix
         error_code = os.spawnv(os.P_WAIT, PATH_SVDLIBC + 'svd', ['-r st', '-d%d' % k, '-o%s' % self._svd_prefix, self._matrix_file])
         if error_code == 127:
-            raise IOError('svd executable not found in: %s' % PATH_SVDLIBC + 'svd')
+            raise IOError('svd executable not found in: %s. You might need to download it: %s' 
+                    % (PATH_SVDLIBC + 'svd', 'http://tedlab.mit.edu/~dr/SVDLIBC/'))
 
     def set_matrix(self, matrix):
         self._matrix_file = matrix
