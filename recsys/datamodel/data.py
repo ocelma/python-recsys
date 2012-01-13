@@ -2,6 +2,7 @@ import sys
 import codecs
 import pickle
 #from random import shuffle
+from exceptions import ValueError
 from numpy.random import shuffle
 
 from recsys.algorithm import VERBOSE
@@ -54,7 +55,7 @@ class Data:
 
     def add_tuple(self, tuple):
         """
-        :param tuple: a tuple containing <rating, user, item> information
+        :param tuple: a tuple containing <rating, user, item> information (e.g.  <value, row, col>)
         """
         #E.g: tuple = (25, "ocelma", "u2") -> "ocelma has played u2 25 times"
         if not len(tuple) == 3:
@@ -103,10 +104,11 @@ class Data:
         :type force: Boolean
         :param sep: Separator among the fields of the file content
         :type sep: string
-        :param format: Format of the file content. E.g: format={'row':0,
-            'col':1, 'value':2}. The row is in position 0, then there is the
-            column value, and finally the rating. So, it resembles to a matrix
-            in plain format
+        :param format: Format of the file content. 
+            Default format is 'value': 0 (first field), then 'row': 1, and 'col': 2.
+            E.g: format={'row':0, 'col':1, 'value':2}. The row is in position 0, 
+            then there is the column value, and finally the rating. 
+            So, it resembles to a matrix in plain format
         :type format: dict()
         :param pickle: is input file in  pickle format?
         :type pickle: Boolean
@@ -136,10 +138,16 @@ class Data:
                         # Default value is 1
                         try:
                             value = data[format['value']]
-                        except ValueError:
-                            value = 1
-                        row_id = data[format['row']]
-                        col_id = data[format['col']]
+                        except KeyError, ValueError:
+                            value = data[0]
+                        try: 
+                            row_id = data[format['row']]
+                        except KeyError:
+                            row_id = data[1]
+                        try:
+                            col_id = data[format['col']]
+                        except KeyError:
+                            col_id = data[2]
                         if format.has_key('ids') and (format['ids'] == int or format['ids'] == 'int'):
                             try:
                                 row_id = int(row_id)
@@ -153,8 +161,11 @@ class Data:
                         continue
                 try:
                     self.add_tuple((float(value), row_id, col_id))
-                except ValueError:
-                    raise ValueError('%s is not a float, while reading %s' % (value, data))
+                except:
+                    if VERBOSE:
+                        sys.stdout.write('\nError while reading (%s, %s, %s). \
+                                Skipping this tuple\n' % (value, row_id, col_id))
+                    #raise ValueError('%s is not a float, while reading %s' % (value, data))
                 i += 1
                 if VERBOSE:
                     if i % 100000 == 0:
