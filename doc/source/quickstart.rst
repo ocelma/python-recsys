@@ -113,3 +113,21 @@ Once you've `built and installed <installation.html>`_ **pyrecsys**, you can:
      (1131, 5.4941438045650068),
      (2339, 5.4916048051511659)]
 
+8. For large datasets (say more than 10M tuples), it might be better to run SVDLIBC directly (divisi2 -that also uses SVDLIBC- is way too slow creating the matrix and computing SVD):
+
+    >>> from recsys.utils.svdlibc import SVDLIBC
+    >>> svdlibc = SVDLIBC('./data/movielens/ratings.dat')
+    >>> svdlibc.to_sparse_matrix(sep='::', format={'col':0, 'row':1, 'value':2, 'ids': int})
+    >>> svdlibc.compute(k=100)
+    >>> svd = svdlibc.export()
+    >>> svd.similar(ITEMID1) # results might be different than example 4. as there's no min_values=10 set here
+    [(1, 0.99999999999999978), 
+     (3114, 0.84099896392054219), 
+     (588, 0.79191433686817747), 
+     (2355, 0.7772760704844065), 
+     (1265, 0.74946256379033827), 
+     (364, 0.73730970556786068), 
+     (2321, 0.73652131961235268), 
+     (595, 0.71665833726881523), 
+     (3253, 0.7075696829413568), 
+     (1923, 0.69687698887991523)]
