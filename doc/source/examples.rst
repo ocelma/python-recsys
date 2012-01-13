@@ -70,7 +70,7 @@ Last.fm
 
 *Why is Ringo always forgotten?*
 
-1. (Slow) Get the last.fm `360K`_ dataset, and save it at /tmp:
+1. (Slow) Get the last.fm `360K`_ dataset, and save it to /tmp:
 
 .. _`360K`: http://mtg.upf.edu/static/datasets/last.fm/lastfm-dataset-360K.tar.gz 
 
@@ -80,7 +80,7 @@ Last.fm
     $ wget http://mtg.upf.edu/static/datasets/last.fm/lastfm-dataset-360K.tar.gz
     $ tar xvzf lastfm-dataset-360K.tar.gz 
 
-2. (Faster way) Download this tar file `tar file`_ file that already contains the matrix.dat (~17M lines), and copy the files to /tmp
+2. (Faster way) Download this `tar file`_ that already contains the matrix.dat (~17M lines), and copy the 3 files to /tmp
 
 .. _`tar file`: http://csc.media.mit.edu/docs/divisi2/install.html
 
