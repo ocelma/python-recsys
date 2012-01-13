@@ -4,7 +4,7 @@ try:
 except ImportError:
     from distutils.core import setup, Extension
 
-VERSION = "0.1"
+VERSION = "0.2"
 
 setup(
     name = "python-recsys",
@@ -18,6 +18,6 @@ setup(
     platforms = ["any"],    
     url="http://www.dtic.upf.edu/~ocelma/software/python-recsys",
     package_dir={'recsys':'recsys'},
-    packages=['recsys', 'recsys.algorithm', 'recsys.datamodel', 'recsys.evaluation'],
+    packages=['recsys', 'recsys.algorithm', 'recsys.datamodel', 'recsys.evaluation', 'recsys.utils'],
     install_requires = ["numpy", "scipy", "divisi2", "csc-pysparse"],
 )
