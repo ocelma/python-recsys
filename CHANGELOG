@@ -1,7 +1,25 @@
 ===========
+Version 0.2
+===========
+
+2011-01-12
+    * added recsys.utils: compute SVDLIBC [http://tedlab.mit.edu/~dr/SVDLIBC/], and import U,S,V to recsys.algorithm.factorize.SVD
+    * added new test_utils.py to check SVDLIBC to recsys import
+
+===========
 Version 0.1
 ===========
 
-2011-10-08
+2011-11-14
+    * add_tuple raises more exceptions, if tuple format not correct
 
+2011-11-08
+    * better explanation of the format parameter in load_data
+    * save shifted matrix only if mean_center is True
+
+2011-10-14
+    * loads and saves zip bigger than 4Gb (allow64=True)
+    * loading data from file (load_data method) more robust now
+
+2011-10-08
     * Added the whole project at github
