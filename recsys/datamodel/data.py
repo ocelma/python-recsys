@@ -148,6 +148,8 @@ class Data:
                             col_id = data[format['col']]
                         except KeyError:
                             col_id = data[2]
+                        row_id = row_id.strip()
+                        col_id = col_id.strip()
                         if format.has_key('ids') and (format['ids'] == int or format['ids'] == 'int'):
                             try:
                                 row_id = int(row_id)
