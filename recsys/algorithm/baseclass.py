@@ -6,10 +6,12 @@
 
 """
 import sys
-#from numpy import sum
-from numpy.linalg import norm
-from scipy.cluster.vq import kmeans
+from scipy.cluster.vq import kmeans2 #for kmeans method
+from random import randint #for kmeans++ (_kinit method)
+#from scipy.linalg import norm #for kmeans++ (_kinit method)
 from scipy import array #for kmeans method
+from numpy import sum
+from numpy.linalg import norm #for _cosine and kmeans++ (_kinit method)
 try:
     import divisi2
 except:
@@ -174,22 +176,53 @@ class Algorithm(object):
     def _cosine(self, v1, v2):
         return float(divisi2.dot(v1,v2) / (norm(v1) * norm(v2)))
 
-    def centroid(self, ids, is_row=True):
+    def centroid(self, ids, are_rows=True):
         if VERBOSE:
             sys.stdout.write('Computing centroid for ids=%s\n' % str(ids))
         points = []
         for id in ids:
-            if is_row:
+            if are_rows:
                 point = self.get_matrix().get_row(id)
             else:
                 point = self.get_matrix().get_col(id)
             points.append(point)
         M = divisi2.SparseMatrix(points)
-        return M.col_op(sum)/len(points) #TODO numpy.sum?
+        return M.col_op(sum)/len(points) #TODO numpy.sum seems slower?
+
+    def _kinit(self, X, k):
+        #Init k seeds according to kmeans++
+        n = X.shape[0]
+        #Choose the 1st seed randomly, and store D(x)^2 in D[]
+        centers = [X[randint(0, n-1)]]
+        D = [norm(x-centers[0])**2 for x in X]
+
+        for _ in range(k-1):
+            bestDsum = bestIdx = -1
+            for i in range(n):
+                #Dsum = sum_{x in X} min(D(x)^2,||x-xi||^2)
+                Dsum = reduce(lambda x,y:x+y,
+                              (min(D[j], norm(X[j]-X[i])**2) for j in xrange(n)))
+                if bestDsum < 0 or Dsum < bestDsum:
+                    bestDsum, bestIdx = Dsum, i
+            centers.append(X[bestIdx])
+            D = [min(D[i], norm(X[i]-X[bestIdx])**2) for i in xrange(n)]
+        return array(centers)
 
     def kmeans(self, id, k=5, is_row=True):
+        """
+        K-means clustering. http://en.wikipedia.org/wiki/K-means_clustering
+
+        Clusterizes the (cols) values of a given row, or viceversa
+
+        :param id: row (or col) id to cluster its values
+        :param k: number of clusters
+        :param is_row: is param *id* a row (or a col)?
+        :type is_row: Boolean
+        """
+        # TODO: switch to Pycluster?
+        # http://pypi.python.org/pypi/Pycluster
         if VERBOSE:
-            sys.stdout.write('Computing k-means, with k=%s\n' % k)
+            sys.stdout.write('Computing k-means, k=%s, for id %s\n' % (k, id))
         point = None
         if is_row:
             point = self.get_matrix().get_row(id)
@@ -202,4 +235,26 @@ class Algorithm(object):
                 points.append(self.get_matrix().get_row(label))
             else:
                 points.append(self.get_matrix().get_col(label))
-        return kmeans(array(points), k)
+        #return kmeans(array(points), k)
+        if VERBOSE:
+            sys.stdout.write('id %s has %s points\n' % (id, len(points)))
+        M = array(points)
+
+        MAX_POINTS = 150
+        # Only apply Matrix initialization if num. points is not that big!
+        if len(points) <= MAX_POINTS:
+            centers = self._kinit(array(points), k)
+            centroids, labels = kmeans2(M, centers, minit='matrix')
+        else:
+            centroids, labels = kmeans2(M, k, minit='random')
+        i = 0
+        clusters = dict()
+        for cluster in labels:
+            if not clusters.has_key(cluster): 
+                clusters[cluster] = dict()
+                clusters[cluster]['centroid'] = centroids[cluster]
+                clusters[cluster]['points'] = []
+            clusters[cluster]['points'].append(ids[i])
+            i += 1
+        return clusters
+
