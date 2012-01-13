@@ -8,5 +8,7 @@ svdlibc = SVDLIBC(movielens)
 svdlibc.to_sparse_matrix(sep='::', format={'col':0, 'row':1, 'value':2, 'ids': int})
 svdlibc.compute()
 svd = svdlibc.export()
+svdlibc.remove_files()
 MOVIEID = 1
 print svd.similar(MOVIEID)
+print svd.recommend(MOVIEID)
