@@ -11,18 +11,23 @@ from recsys.datamodel.data import Data
 # Path to 'svd' executable [ http://tedlab.mit.edu/~dr/SVDLIBC/ ]
 PATH_SVDLIBC = '/usr/local/bin/'
 
-#TODO add remove method to delete intermediate files (matrix.dat, svd-*, etc.)
-
 class SVDLIBC(object):
-    def __init__(self, datafile, matrix='matrix.dat', prefix='svd'):
+    def __init__(self, datafile=None, matrix='matrix.dat', prefix='svd'):
         self._data_file = datafile
         self._matrix_file = matrix
         self._svd_prefix = prefix
 
-    def compute(self, k=100):
+    def compute(self, k=100, matrix=None, prefix=None):
+        if matrix:
+            self._matrix_file = matrix
+        if prefix:
+            self._svd_prefix = prefix
         error_code = os.spawnv(os.P_WAIT, PATH_SVDLIBC + 'svd', ['-r st', '-d%d' % k, '-o%s' % self._svd_prefix, self._matrix_file])
         if error_code == 127:
             raise IOError('svd executable not found in: %s' % PATH_SVDLIBC + 'svd')
+
+    def set_matrix(self, matrix):
+        self._matrix_file = matrix
 
     def remove_files(self):
         PREFIX = self._svd_prefix
