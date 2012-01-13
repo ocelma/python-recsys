@@ -6,9 +6,6 @@ You can find all these examples in the *./draft* folder.
 Movielens
 ---------
 
-Simple SVD
-~~~~~~~~~~
-
 .. code-block:: python
 
     import sys
@@ -67,6 +64,77 @@ Save it as **movielens.py**, and run it!
     Computing svd k=100, min_values=5, pre_normalize=None, mean_center=True, post_normalize=True
     RMSE=0.91919
     MAE=0.717771
+
+Last.fm
+-------
+
+*Why is Ringo always forgotten?*
+
+1. (Slow) Get the last.fm `360K`_ dataset, and save it at /tmp:
+
+.. _`360K`: http://mtg.upf.edu/static/datasets/last.fm/lastfm-dataset-360K.tar.gz 
+
+.. code-block:: python
+
+    $ cd /tmp/
+    $ wget http://mtg.upf.edu/static/datasets/last.fm/lastfm-dataset-360K.tar.gz
+    $ tar xvzf lastfm-dataset-360K.tar.gz 
+
+2. (Faster way) Download this tar file `tar file`_ file that already contains the matrix.dat (~17M lines), and copy the files to /tmp
+
+.. _`tar file`: http://csc.media.mit.edu/docs/divisi2/install.html
+
+
+.. code-block:: python
+
+    $ cd /tmp/
+    $ wget http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm360K-svd-example.tar.gz
+    $ tar xvzf http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm360K-svd-example.tar.gz
+
+and then just copy these 10 lines of code!
+  
+.. code-block:: python
+
+    import sys
+    import recsys.algorithm
+    recsys.algorithm.VERBOSE = True
+    from recsys.utils.svdlibc import SVDLIBC
+
+    # 1. (Slow) Create Sparse matrix.dat SVDLIBC input (http://tedlab.mit.edu/~dr/SVDLIBC/SVD_F_ST.html). 
+    #    This eats quite a lot of memory! (~9Gb)
+    #svdlibc = SVDLIBC(datafile='/tmp/lastfm-dataset-360K/usersha1-artmbid-artname-plays.tsv', 
+    #                  matrix='/tmp/matrix.dat', prefix='/tmp/svd')
+    #svdlibc.to_sparse_matrix(sep='\t', format={'col':0, 'row':1, 'value':3})
+
+    # 2. (Faster way): 
+    # You already downloaded and copied these 3 files at /tmp :
+    #   /tmp/matrix.dat
+    #   /tmp/svd.ids.rows
+    #   /tmp/svd.ids.cols
+    svdlibc = SVDLIBC()
+
+    # Compute SVDLIBC
+    k = 100
+    svdlibc.compute(k, matrix='/tmp/matrix.dat', prefix='/tmp/svd') # Wait ~2 mins.
+    svd = svdlibc.export() # This can consume ~2.8Gb. of memory
+    # print svd
+
+    ID = 'b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d' # The Beatles MBID
+    svd.similar(ID) # Get artists similar to The Beatles (...why is Ringo always forgotten!?)
+    [('b10bbbfc-cf9e-42e0-be17-e2c3e1d2600d', 0.99999999999999978), # The Beatles
+     ('4d5447d7-c61c-4120-ba1b-d7f471d385b9', 0.96963526974942182), # John Lennon
+     ('31f49c01-b8e0-40ba-b1aa-3754f6fa78d5', 0.96566802153067377), # Paul McCartney & Wings
+     ('5c014631-875c-4f3e-89e9-22cf9d4769a4', 0.9554322804979507),  # John Lennon & Yoko Ono
+     ('ba550d0e-adac-4864-b88b-407cab5e76af', 0.95520067803777453), # Paul McCartney
+     ('e975f847-7b7a-4313-8ebc-1cbfc978e817', 0.95385390155825112), # Paul & Linda McCartney
+     ('42a8f507-8412-4611-854f-926571049fa0', 0.94022861823264092), # George Harrison
+     ('5235052b-7fa0-498b-accf-26b9e7767da7', 0.93691208464079334), # Mohamed Moneir
+     ('dafcd725-9cb6-4347-be21-fd9a950e8064', 0.9352608795525883),  # Klaatu
+     ('cb56afea-5648-4173-b1b7-762288492997', 0.93383747203947887)] # Bobby Sherman
+
+**The Beatles** similar artists' are so so... Still, you can easily improve these results as explained in this boring `book`_
+
+.. _`book`: http://ocelma.net/MusicRecommendationBook/index.html
 
 Implementing a new algorithm
 -----------------------------
