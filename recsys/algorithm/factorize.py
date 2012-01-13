@@ -15,7 +15,7 @@ except:
     from csc import divisi2
 from numpy import loads, mean, sum, nan
 
-from scipy.cluster.vq import kmeans, kmeans2 #for kmeans method
+from scipy.cluster.vq import kmeans2 #for kmeans method
 from random import randint #for kmeans++ (_kinit method)
 from scipy.linalg import norm #for kmeans++ (_kinit method)
 from scipy import array #for kmeans method
@@ -53,6 +53,15 @@ class SVD(Algorithm):
 
         if filename:
             self.load_model(filename)
+
+    def __repr__(self):
+        try:
+            s = '\n'.join(('M\':' + str(self._reconstruct_matrix()), \
+                'A row (U):' + str(self._reconstruct_matrix().right[1]), \
+                'A col (V):' + str(self._reconstruct_matrix().left[1])))
+        except TypeError:
+            s = self._data.__repr__()
+        return s
 
     def load_model(self, filename):
         """
@@ -137,7 +146,7 @@ class SVD(Algorithm):
                 self._matrix_reconstructed = divisi2.reconstruct(self._U, self._S, self._V)
         return self._matrix_reconstructed
 
-    def compute(self, k=100, min_values=None, pre_normalize=None, mean_center=True, post_normalize=True, savefile=None):
+    def compute(self, k=100, min_values=None, pre_normalize=None, mean_center=False, post_normalize=True, savefile=None):
         """
         Computes SVD on matrix *M*, :math:`M = U \Sigma V^T`
 
@@ -168,6 +177,8 @@ class SVD(Algorithm):
         # Mean center?
         shifts, row_shift, col_shift, total_shift = (None, None, None, None)
         if mean_center:
+            if VERBOSE:
+                sys.stdout.write("[WARNING] mean_center is True: if you see a 'Warning' message you might need to set svd.compute(..., mean_center=False)\n")
             matrix, row_shift, col_shift, total_shift = matrix.mean_center() 
             self._shifts = (row_shift, col_shift, total_shift)
 
@@ -274,26 +285,22 @@ class SVD(Algorithm):
         M = divisi2.SparseMatrix(points)
         return M.col_op(sum)/len(points) #TODO Numpy.sum?
 
-    def _kinit(self, X, k):
-        #Init k seeds according to kmeans++
-        n = X.shape[0]
-        #Choose the 1st seed randomly, and store D(x)^2 in D[]
-        centers = [X[randint(0, n-1)]]
-        D = [norm(x-centers[0])**2 for x in X]
+    def kmeans(self, ids, k=5, are_rows=True):
+        """
+        K-means clustering. It uses k-means++ (http://en.wikipedia.org/wiki/K-means%2B%2B) to choose the initial centroids of the clusters
 
-        for _ in range(k-1):
-            bestDsum = bestIdx = -1
-            for i in range(n):
-                #Dsum = sum_{x in X} min(D(x)^2,||x-xi||^2)
-                Dsum = reduce(lambda x,y:x+y,
-                              (min(D[j], norm(X[j]-X[i])**2) for j in xrange(n)))
-                if bestDsum < 0 or Dsum < bestDsum:
-                    bestDsum, bestIdx = Dsum, i
-            centers.append(X[bestIdx])
-            D = [min(D[i], norm(X[i]-X[bestIdx])**2) for i in xrange(n)]
-        return array(centers)
+        Clusterizes a list of IDs (either row or cols)
 
-    def _kmeans(self, ids, k=5, are_rows=True):
+        :param ids: list of row (or col) ids to cluster
+        :param k: number of clusters
+        :param are_rows: is param *ids* a list of rows (or cols)?
+        :type are_rows: Boolean
+        """
+        if not isinstance(ids, list):
+            # Call baseclass kmeans instead TODO document this!
+            return super(SVD, self).kmeans(ids, k=k, is_row=are_rows)
+        if VERBOSE:
+            sys.stdout.write('Computing k-means, k=%s for ids %s\n' % (k, ids))
         MAX_POINTS = 150
         points = []
         for id in ids:
@@ -302,7 +309,7 @@ class SVD(Algorithm):
             else:
                 points.append(self._V.row_named(id))
         M = array(points)
-        # Only apply Matrix initialization if num. points is lower
+        # Only apply Matrix initialization if num. points is not that big!
         if len(points) <= MAX_POINTS:
             centers = self._kinit(array(points), k)
             centroids, labels = kmeans2(M, centers, minit='matrix')
@@ -319,6 +326,7 @@ class SVD(Algorithm):
             i += 1
         return clusters
 
+    '''
     def kmeans(self, id, k=5, is_row=True):
         """
         K-means clustering. It uses k-means++ (http://en.wikipedia.org/wiki/K-means%2B%2B) for choosing the initial centroids of the clusters
@@ -342,7 +350,7 @@ class SVD(Algorithm):
             label = point.label(i)
             points.append(label)
         return self._kmeans(points, k, not is_row)
-
+    '''
 
 # SVDNeighbourhood
 class SVDNeighbourhood(SVD):
