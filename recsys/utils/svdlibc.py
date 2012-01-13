@@ -11,6 +11,8 @@ from recsys.datamodel.data import Data
 # Path to 'svd' executable [ http://tedlab.mit.edu/~dr/SVDLIBC/ ]
 PATH_SVDLIBC = '/usr/local/bin/'
 
+#TODO add remove method to delete intermediate files (matrix.dat, svd-*, etc.)
+
 class SVDLIBC(object):
     def __init__(self, datafile, matrix='matrix.dat', prefix='svd'):
         self._data_file = datafile
@@ -18,7 +20,23 @@ class SVDLIBC(object):
         self._svd_prefix = prefix
 
     def compute(self, k=100):
-        os.spawnv(os.P_WAIT, PATH_SVDLIBC + 'svd', ['-r st', '-d%d' % k, '-o%s' % self._svd_prefix, self._matrix_file])
+        error_code = os.spawnv(os.P_WAIT, PATH_SVDLIBC + 'svd', ['-r st', '-d%d' % k, '-o%s' % self._svd_prefix, self._matrix_file])
+        if error_code == 127:
+            raise IOError('svd executable not found in: %s' % PATH_SVDLIBC + 'svd')
+
+    def remove_files(self):
+        PREFIX = self._svd_prefix
+        file_Ut = PREFIX + '-Ut'
+        file_Vt = PREFIX + '-Vt'
+        file_S = PREFIX + '-S'
+        file_row_ids = '%s.ids.rows' % self._svd_prefix
+        file_col_ids = '%s.ids.cols' % self._svd_prefix
+
+        files = [self._matrix_file, file_Ut, file_Vt, file_S, file_row_ids, file_col_ids]
+        for file in files:
+            if not os.path.exists(file):
+                raise IOError('could not delete file %s' % file)
+            os.remove(file)
 
     def to_sparse_matrix(self, sep='\t', format={'ids': int}):
         # http://tedlab.mit.edu/~dr/SVDLIBC/SVD_F_ST.html
