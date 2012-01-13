@@ -163,8 +163,7 @@ class Data:
                     self.add_tuple((float(value), row_id, col_id))
                 except:
                     if VERBOSE:
-                        sys.stdout.write('\nError while reading (%s, %s, %s). \
-                                Skipping this tuple\n' % (value, row_id, col_id))
+                        sys.stdout.write('\nError while reading (%s, %s, %s). Skipping this tuple\n' % (value, row_id, col_id))
                     #raise ValueError('%s is not a float, while reading %s' % (value, data))
                 i += 1
                 if VERBOSE:
