@@ -95,7 +95,8 @@ Decision-based metrics
 ======================
 
 Decision-based metrics evaluates the top-N recommendations for a user.
-Recommendations comes in a ranked list of items, ordered by decreasing relevance (yet, the decision-based metrics do not take into account the position -or rank- of the item in the result list)
+Uusally recommendations are a ranked list of items, ordered by decreasing relevance.
+Yet, the decision-based metrics do not take into account the position -or rank- of the item in the result list).
 
 There are four different cases to take into account:
 

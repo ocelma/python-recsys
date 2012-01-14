@@ -102,11 +102,11 @@ Recommendations (i.e. unknown values in :math:`M_{ij}`) are also derived from :m
 
     >>> svd.recommend(USERID, n=10, only_unknowns=True, is_row=False)
 
-returns the higher values of :math:`M^\prime_{i \cdot}` :math:`\forall_j{M_{ij}=\emptyset}`, whilst
+returns the higher values (e.g. items that the user has not rated) of :math:`M^\prime_{i \cdot}` :math:`\forall_j{M_{ij}=\emptyset}`, whilst
 
     >>> svd.recommend(USERID, n=10, only_unknowns=False, is_row=False)
 
-returns the higher values for the user
+returns the best items for the user
 
 Neighbourhood SVD
 -----------------
