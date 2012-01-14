@@ -89,7 +89,7 @@ Loading user data, and adding tuples to Data:
 
     data = Data()
     for PLAYS, ITEMID in user.get_items():
-        data.add_tuple((user.get_id(), ITEMID, PLAYS)) # Tuple format is: (user, item, value)
+        data.add_tuple((PLAYS, ITEMID, user.get_id())) # Tuple format is: <value, row, column>
 
 Loading a train/test dataset from a file. This example actually reads the Movielens 1M Ratings Data Set (ratings.dat) file:
 
@@ -116,7 +116,7 @@ Getting data from the test dataset:
     for rating, item_id, user_id in test:
         pass # Do something, like evaluating how well we can predict the ratings in this test dataset
 
-Accessing to the test dataset (as if it were a list):
+Accessing the test dataset as if it were a list:
 
 .. code-block:: python
 
