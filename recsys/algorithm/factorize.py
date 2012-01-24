@@ -14,6 +14,7 @@ try:
 except:
     from csc import divisi2
 from numpy import loads, mean, sum, nan
+from operator import itemgetter
 
 from scipy.cluster.vq import kmeans2 #for kmeans method
 from random import randint #for kmeans++ (_kinit method)
@@ -96,7 +97,7 @@ class SVD(Algorithm):
 
         :param filename: path to save the SVD matrix transformation (U, Sigma and V matrices)
         :type filename: string
-        :param options: a dict() containing the info about the SVD transformation. E.g. {'k': 100, 'min_values': 5, 'pre_normalize': False, 'mean_center': True, 'post_normalize': True}
+        :param options: a dict() containing the info about the SVD transformation. E.g. {'k': 100, 'min_values': 5, 'pre_normalize': None, 'mean_center': True, 'post_normalize': True}
         :type options: dict
         """
         if VERBOSE:
@@ -178,7 +179,7 @@ class SVD(Algorithm):
         shifts, row_shift, col_shift, total_shift = (None, None, None, None)
         if mean_center:
             if VERBOSE:
-                sys.stdout.write("[WARNING] mean_center is True: if you see a 'Warning' message you might need to set svd.compute(..., mean_center=False)\n")
+                sys.stdout.write("[WARNING] mean_center is True. svd.similar(...) might return nan's. If so, then do svd.compute(..., mean_center=False)\n")
             matrix, row_shift, col_shift, total_shift = matrix.mean_center() 
             self._shifts = (row_shift, col_shift, total_shift)
 
@@ -285,7 +286,7 @@ class SVD(Algorithm):
         M = divisi2.SparseMatrix(points)
         return M.col_op(sum)/len(points) #TODO Numpy.sum?
 
-    def kmeans(self, ids, k=5, are_rows=True):
+    def kmeans(self, ids, k=5, components=3, are_rows=True):
         """
         K-means clustering. It uses k-means++ (http://en.wikipedia.org/wiki/K-means%2B%2B) to choose the initial centroids of the clusters
 
@@ -293,11 +294,12 @@ class SVD(Algorithm):
 
         :param ids: list of row (or col) ids to cluster
         :param k: number of clusters
+        :param components: how many eigen values use (from SVD)
         :param are_rows: is param *ids* a list of rows (or cols)?
         :type are_rows: Boolean
         """
         if not isinstance(ids, list):
-            # Call baseclass kmeans instead TODO document this!
+            # Cluster the whole row(or col) values. It's slow!
             return super(SVD, self).kmeans(ids, k=k, is_row=are_rows)
         if VERBOSE:
             sys.stdout.write('Computing k-means, k=%s for ids %s\n' % (k, ids))
@@ -305,9 +307,9 @@ class SVD(Algorithm):
         points = []
         for id in ids:
             if are_rows:
-                points.append(self._U.row_named(id))
+                points.append(self._U.row_named(id)[:components])
             else:
-                points.append(self._V.row_named(id))
+                points.append(self._V.row_named(id)[:components])
         M = array(points)
         # Only apply Matrix initialization if num. points is not that big!
         if len(points) <= MAX_POINTS:
@@ -322,7 +324,11 @@ class SVD(Algorithm):
                 clusters[cluster] = dict()
                 clusters[cluster]['centroid'] = centroids[cluster]
                 clusters[cluster]['points'] = []
-            clusters[cluster]['points'].append(ids[i])
+            point = self._U.row_named(ids[i])[:components]
+            centroid = clusters[cluster]['centroid']
+            to_centroid = self._cosine(centroid, point)
+            clusters[cluster]['points'].append((ids[i], to_centroid))
+            clusters[cluster]['points'].sort(key=itemgetter(1), reverse=True)
             i += 1
         return clusters
 
