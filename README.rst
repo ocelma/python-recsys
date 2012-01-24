@@ -25,7 +25,8 @@ To install the dependencies do something like this (Ubuntu):
 
     sudo apt-get install python-scipy
     sudo apt-get install python-numpy
-    sudo pip install divisi2 csc-pysparse
+    sudo pip install csc-pysparse
+    sudo pip install divisi2
 
     # If you don't have pip installed then do:
     # sudo easy_install csc-pysparse
