@@ -215,9 +215,6 @@ def test_kmeans():
         for other_cluster in clusters.values():
             print svd._cosine(cluster['centroid'], other_cluster['centroid'])
         print
-        for item_id in item_ids:
-            print item_id, svd._cosine(cluster['centroid'], svd._U.row_named(item_id))
-        print
     clusters = svd.kmeans(USERID1, are_rows=False)
     print clusters
 
