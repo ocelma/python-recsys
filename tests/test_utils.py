@@ -2,6 +2,9 @@ import os
 from nose import with_setup
 from nose.tools import assert_equal, assert_not_equal, assert_raises, assert_true
 
+import recsys.algorithm
+recsys.algorithm.VERBOSE = True
+
 from recsys.utils.svdlibc import SVDLIBC
 
 from tests import MOVIELENS_DATA_PATH
@@ -9,7 +12,7 @@ from tests import MOVIELENS_DATA_PATH
 
 def setup():
     global svdlibc
-    svdlibc = SVDLIBC(os.path.join(MOVIELENS_DATA_PATH, 'ratings.dat'))
+    svdlibc = SVDLIBC(datafile=os.path.join(MOVIELENS_DATA_PATH, 'ratings.dat'))
 
 def teardown():
     svdlibc.remove_files()
