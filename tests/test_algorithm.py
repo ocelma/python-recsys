@@ -149,7 +149,7 @@ def test_compute_svd():
         print
 
 def test_save_model():
-    svd.save_model(os.path.join(MOVIELENS_DATA_PATH, 'SVD_matrix'))
+    svd.save_model(os.path.join(MOVIELENS_DATA_PATH, 'SVD_matrix'), options={'k': FACTORS})
 
 def test_load_model():
     svd2 = SVD()
