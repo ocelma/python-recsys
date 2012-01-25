@@ -1,3 +1,4 @@
+import sys
 import codecs
 import os
 from operator import itemgetter
@@ -7,6 +8,7 @@ from divisi2.ordered_set import OrderedSet
 from csc.divisi2.dense import DenseMatrix
 from recsys.algorithm.factorize import SVD
 from recsys.datamodel.data import Data
+from recsys.algorithm import VERBOSE
 
 # Path to 'svd' executable [ http://tedlab.mit.edu/~dr/SVDLIBC/ ]
 PATH_SVDLIBC = '/usr/local/bin/'
@@ -22,6 +24,8 @@ class SVDLIBC(object):
             self._matrix_file = matrix
         if prefix:
             self._svd_prefix = prefix
+        if VERBOSE:
+            sys.stdout.write('SVDLIBC: Computing svd(k=%s) from %s, saving it to %s\n' % (k, self._matrix_file, self._svd_prefix))
         error_code = os.spawnv(os.P_WAIT, PATH_SVDLIBC + 'svd', ['-r st', '-d%d' % k, '-o%s' % self._svd_prefix, self._matrix_file])
         if error_code == 127:
             raise IOError('svd executable not found in: %s. You might need to download it: %s' 
@@ -120,6 +124,8 @@ class SVDLIBC(object):
         file_V = PREFIX + '-V'
         
         # Read matrices files (U, S, Vt), using CSV (it's much faster than numpy.loadtxt()!)
+        if VERBOSE:
+            sys.stdout.write('Reading files: %s, %s, %s\n' % (file_Ut, file_Vt, file_S))
         try:
             Ut = array(list(csv.reader(open(file_Ut),delimiter=' '))[1:]).astype('float')
             U = Ut.transpose()
@@ -137,6 +143,8 @@ class SVDLIBC(object):
         PREFIX_INDEXES = PREFIX + '.ids.'
         file_U_idx = PREFIX_INDEXES + 'rows'
         file_V_idx = PREFIX_INDEXES + 'cols'
+        if VERBOSE:
+            sys.stdout.write('Reading index files: %s, %s\n' % (file_U_idx, file_V_idx))
         try:
             U_idx = [ int(idx.strip()) for idx in open(file_U_idx)]
         except:
@@ -151,6 +159,8 @@ class SVDLIBC(object):
         assert(len(V_idx) == len(OrderedSet(V_idx)))
         
         # Create SVD
+        if VERBOSE:
+            sys.stdout.write('Creating SVD() class\n')
         svd = SVD()
         svd._U = DenseMatrix(U, OrderedSet(U_idx), None)
         svd._S = S
@@ -176,4 +186,4 @@ if __name__ == "__main__":
     print '\nLoading SVD'
     svd = svdlibc.export()
     print svd
-    svd.save_model('/tmp/MODEL')
+    svd.save_model('/tmp/svd-model', options={'k': k})
