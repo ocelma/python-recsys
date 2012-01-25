@@ -21,7 +21,6 @@ Movielens
     #Dataset
     PERCENT_TRAIN = int(sys.argv[2])
     data = Data()
-    print 'Loading dataset %s' % sys.argv[1]
     data.load(sys.argv[1], sep='::', format={'col':0, 'row':1, 'value':2, 'ids':int})
         # About format parameter:
         #   'row': 1 -> Rows in matrix come from column 1 in ratings.dat file
@@ -197,7 +196,6 @@ Here's an example using this simple baseline Algorithm class:
     #Dataset
     PERCENT_TRAIN = int(sys.argv[2])
     data = Data()
-    print 'Loading dataset %s' % sys.argv[1]
     data.load(sys.argv[1], sep='::', format={'col':0, 'row':1, 'value':2})
     #Train & Test data
     train, test = data.split_train_test(percent=PERCENT_TRAIN)
