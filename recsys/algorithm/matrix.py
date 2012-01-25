@@ -91,6 +91,8 @@ class SimilarityMatrix(Matrix):
         self._matrix = reconstruct_similarity(U, S, post_normalize=post_normalize)
 
     def empty(self):
-        nrows, ncols = self._matrix.shape
+        nrows, ncols = (0, 0)
+        if self._matrix:
+            nrows, ncols = self._matrix.shape
         return not self._matrix or not (nrows and ncols)
 
