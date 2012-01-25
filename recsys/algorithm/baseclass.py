@@ -135,7 +135,7 @@ class Algorithm(object):
             self._matrix.set(self._matrix.get().squish(min_values))
 
     def _get_row_similarity(self, i):
-        if not self.get_matrix_similarity():
+        if not self.get_matrix_similarity() or self.get_matrix_similarity().get() is None:
             self.compute()
         try:
             return self.get_matrix_similarity().get_row(i)
@@ -150,7 +150,7 @@ class Algorithm(object):
         :type n: int
         :returns: the most similar elements of *i*
         """
-        if not self.get_matrix_similarity():
+        if not self.get_matrix_similarity() or self.get_matrix_similarity().get() is None:
             self.compute()
         return self._get_row_similarity(i).top_items(n)
 
@@ -162,7 +162,7 @@ class Algorithm(object):
         :type j: user or item id
         :returns: the similarity between the two elements *i* and *j*
         """
-        if not self.get_matrix_similarity():
+        if not self.get_matrix_similarity() or self.get_matrix_similarity().get() is None:
             self.compute()
         return self.get_matrix_similarity().value(i, j)
 
