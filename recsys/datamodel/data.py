@@ -130,7 +130,7 @@ class Data:
                     # Default value is 1
                     try:
                         value, row_id, col_id = data
-                    except ValueError:
+                    except:
                         value = 1
                         row_id, col_id = data
                 else:
@@ -139,7 +139,7 @@ class Data:
                         try:
                             value = data[format['value']]
                         except KeyError, ValueError:
-                            value = data[0]
+                            value = 1
                         try: 
                             row_id = data[format['row']]
                         except KeyError:
@@ -161,6 +161,14 @@ class Data:
                         print 'Error while reading: %s' % data #Just ignore that line
                         #raise IndexError('while reading %s' % data)
                         continue
+                # Try to convert ids to int
+                try:
+                    row_id = int(row_id)
+                except: pass
+                try:
+                    col_id = int(col_id)
+                except: pass
+                # Add tuple
                 try:
                     self.add_tuple((float(value), row_id, col_id))
                 except:
