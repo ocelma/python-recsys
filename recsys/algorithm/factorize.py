@@ -21,9 +21,16 @@ from random import randint #for kmeans++ (_kinit method)
 from scipy.linalg import norm #for kmeans++ (_kinit method)
 from scipy import array #for kmeans method
 
+from numpy import fromfile #for large files (U and V)
+from divisi2 import DenseVector
+from divisi2 import DenseMatrix
+from divisi2.ordered_set import OrderedSet
+                                        
 from recsys.algorithm.baseclass import Algorithm
 from recsys.algorithm.matrix import SimilarityMatrix
 from recsys.algorithm import VERBOSE
+
+TMPDIR = '/tmp'
 
 class SVD(Algorithm):
     """
@@ -55,6 +62,10 @@ class SVD(Algorithm):
         if filename:
             self.load_model(filename)
 
+        # Row and Col ids. Only when importing from SVDLIBC
+        self._file_row_ids = None
+        self._file_col_ids = None
+
     def __repr__(self):
         try:
             s = '\n'.join(('M\':' + str(self._reconstruct_matrix()), \
@@ -75,13 +86,56 @@ class SVD(Algorithm):
             zip = zipfile.ZipFile(filename, allowZip64=True)
         except:
             zip = zipfile.ZipFile(filename + '.zip', allowZip64=True)
+        # Options file
+        options = dict()
+        for line in zip.open('README'):
+            data = line.strip().split('\t')
+            options[data[0]] = data[1]
+        k = int(options['k'])
+
+        # Load U, S, and V
+        """
         #Python 2.6 only:
         #self._U = loads(zip.open('.U').read())
         #self._S = loads(zip.open('.S').read())
         #self._V = loads(zip.open('.V').read())
-        self._U = loads(zip.read('.U'))
+        """
+        try:
+            self._U = loads(zip.read('.U'))
+        except:
+            matrix = fromfile(zip.extract('.U', TMPDIR))
+            vectors = []
+            i = 0
+            while i < len(matrix) / k:
+                v = DenseVector(matrix[k*i:k*(i+1)])
+                vectors.append(v)
+                i += 1
+            try:
+                idx = [ int(idx.strip()) for idx in zip.read('.row_ids').split('\n') if idx]
+            except:
+                idx = [ idx.strip() for idx in zip.read('.row_ids').split('\n') if idx]
+            #self._U = DenseMatrix(vectors) 
+            self._U = DenseMatrix(vectors, OrderedSet(idx), None)
+        try:
+            self._V = loads(zip.read('.V'))
+        except:
+            matrix = fromfile(zip.extract('.V', TMPDIR))
+            vectors = []
+            i = 0
+            while i < len(matrix) / k:
+                v = DenseVector(matrix[k*i:k*(i+1)])
+                vectors.append(v)
+                i += 1
+            try:
+                idx = [ int(idx.strip()) for idx in zip.read('.col_ids').split('\n') if idx]
+            except:
+                idx = [ idx.strip() for idx in zip.read('.col_ids').split('\n') if idx]
+            #self._V = DenseMatrix(vectors) 
+            self._V = DenseMatrix(vectors, OrderedSet(idx), None)
+
         self._S = loads(zip.read('.S'))
-        self._V = loads(zip.read('.V'))
+
+        # Shifts for Mean Centerer Matrix
         self._shifts = None
         if '.shifts.row' in zip.namelist():
             self._shifts = [loads(zip.read('.shifts.row')), 
@@ -107,9 +161,19 @@ class SVD(Algorithm):
         for option, value in options.items():
             f_opt.write('\t'.join((option, str(value))) + '\n')
         f_opt.close()
-        self._U.dump(filename + '.U')
+        # U, S, and V
+        MAX_VECTORS = 2**21
+        if len(self._U) < MAX_VECTORS:
+            self._U.dump(filename + '.U')
+        else:
+            self._U.tofile(filename + '.U')
+        if len(self._V) < MAX_VECTORS:
+            self._V.dump(filename + '.V')
+        else:
+            self._V.tofile(filename + '.V')
         self._S.dump(filename + '.S')
-        self._V.dump(filename + '.V')
+
+        # Shifts for Mean Centered Matrix
         if self._shifts:
             #(row_shift, col_shift, total_shift)
             self._shifts[0].dump(filename + '.shifts.row')
@@ -120,18 +184,28 @@ class SVD(Algorithm):
         if not filename.endswith('.zip') and not filename.endswith('.ZIP'):
             zip += '.zip'
         fp = zipfile.ZipFile(zip, 'w', allowZip64=True)
-        #options
+
+        # Store Options in the ZIP file
         fp.write(filename=filename + '.config', arcname='README')
         os.remove(filename + '.config')
-        #Store matrices
+        
+        # Store matrices in the ZIP file
         for extension in ['.U', '.S', '.V']:
             fp.write(filename=filename + extension, arcname=extension)
             os.remove(filename + extension)
-        #Store mean center shifts
+
+        # Store mean center shifts in the ZIP file
         if self._shifts:
             for extension in ['.shifts.row', '.shifts.col', '.shifts.total']:
                 fp.write(filename=filename + extension, arcname=extension)
                 os.remove(filename + extension)
+
+        # Store row and col ids file, if importing from SVDLIBC
+        if self._file_row_ids and self._file_col_ids:
+            fp.write(filename=self._file_row_ids, arcname='.row_ids')
+        if self._file_col_ids:
+            fp.write(filename=self._file_col_ids, arcname='.col_ids')
+
 
     def _reconstruct_similarity(self, post_normalize=True, force=True):
         if not self.get_matrix_similarity() or force:
