@@ -153,13 +153,17 @@ class Data:
                         if format.has_key('ids') and (format['ids'] == int or format['ids'] == 'int'):
                             try:
                                 row_id = int(row_id)
-                            except: pass
+                            except:
+                                print 'Error (ID is not int) while reading: %s' % data #Just ignore that line
+                                continue
                             try:
                                 col_id = int(col_id)
-                            except: pass
+                            except:
+                                print 'Error (ID is not int) while reading: %s' % data #Just ignore that line
+                                continue
                     except IndexError:
-                        print 'Error while reading: %s' % data #Just ignore that line
                         #raise IndexError('while reading %s' % data)
+                        print 'Error while reading: %s' % data #Just ignore that line
                         continue
                 # Try to convert ids to int
                 try:
