@@ -48,7 +48,7 @@ class SVDLIBC(object):
                 raise IOError('could not delete file %s' % file)
             os.remove(file)
 
-    def to_sparse_matrix(self, sep='\t', format={'ids': int}):
+    def to_sparse_matrix(self, sep='\t', format=None):
         # http://tedlab.mit.edu/~dr/SVDLIBC/SVD_F_ST.html
         data = Data()
         data.load(self._data_file, sep=sep, format=format)
@@ -73,6 +73,10 @@ class SVDLIBC(object):
         col_values = []
         row, col = (0, 0)
         for value, row_id, col_id in l:
+            #if not row_id or not col_id or not value:
+            #    if VERBOSE:
+            #        sys.stdout.write('Skipping: %s, %s, %s\n' % (value, row_id, col_id))
+            #    continue
             if col_id != prev_col_id:
                 if col_values:
                     f.write('%s\n' % len(col_values))
@@ -99,16 +103,20 @@ class SVDLIBC(object):
         rows = rows.items()
         rows.sort(key=itemgetter(1))
         for row_id, _ in rows:
+            if row_id == '':
+                continue
             if isinstance(row_id, int):
                 row_id = str(row_id)
             f_row_ids.write(row_id + '\n')
         f_row_ids.close()
+
         cols = cols.items()
         cols.sort(key=itemgetter(1))
         for col_id, _ in cols:
+            if col_id == '':
+                continue
             if isinstance(col_id, int):
                 col_id = str(col_id)
-            #f_col_ids.write(unicode(col_id, 'utf8') + '\n')
             f_col_ids.write(col_id + '\n')
         f_col_ids.close()
 
@@ -155,9 +163,11 @@ class SVDLIBC(object):
             V_idx = [ idx.strip() for idx in open(file_V_idx)]
         
         #Check no duplicated IDs!!!
-        assert(len(U_idx) == len(OrderedSet(U_idx)))
-        assert(len(V_idx) == len(OrderedSet(V_idx)))
-        
+        assert(len(U_idx) == len(OrderedSet(U_idx))), 'There are duplicated row IDs!'
+        assert(len(U_idx) == U.shape[0]), 'There are duplicated (or empty) row IDs!'
+        assert(len(V_idx) == len(OrderedSet(V_idx))), 'There are duplicated col IDs!'
+        assert(len(V_idx) == V.shape[0]), 'There are duplicated (or empty) col IDs'
+ 
         # Create SVD
         if VERBOSE:
             sys.stdout.write('Creating SVD() class\n')
@@ -167,6 +177,13 @@ class SVDLIBC(object):
         svd._V = DenseMatrix(V, OrderedSet(V_idx), None)
         svd._matrix_similarity = svd._reconstruct_similarity()
         svd._matrix_reconstructed = svd._reconstruct_matrix()
+
+        # If save_model, then use row and col ids from SVDLIBC
+        MAX_VECTORS = 2**21
+        if len(svd._U) > MAX_VECTORS:
+            svd._file_row_ids = file_U_idx
+        if len(svd._V) > MAX_VECTORS:
+            svd._file_col_ids = file_V_idx
         
         return svd
 
@@ -181,7 +198,7 @@ if __name__ == "__main__":
 
     svdlibc = SVDLIBC(datafile=datafile, matrix=matrix, prefix=prefix)
     print 'Loading', datafile
-    svdlibc.to_sparse_matrix()
+    svdlibc.to_sparse_matrix(format={'ids': int})
     svdlibc.compute(k)
     print '\nLoading SVD'
     svd = svdlibc.export()
