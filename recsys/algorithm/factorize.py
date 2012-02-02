@@ -201,7 +201,7 @@ class SVD(Algorithm):
                 os.remove(filename + extension)
 
         # Store row and col ids file, if importing from SVDLIBC
-        if self._file_row_ids and self._file_col_ids:
+        if self._file_row_ids:
             fp.write(filename=self._file_row_ids, arcname='.row_ids')
         if self._file_col_ids:
             fp.write(filename=self._file_col_ids, arcname='.col_ids')
