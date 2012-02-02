@@ -16,6 +16,10 @@ items -it's just a matter of how you load the matrix data-).
 Loading data
 ~~~~~~~~~~~~
 
+How to load a dataset (e.g. `Movielens`_ 10M)?
+
+.. _`Movielens`: http://www.grouplens.org/node/73
+
 .. code-block:: python
 
     from recsys.algorithm.factorize import SVD
@@ -24,10 +28,12 @@ Loading data
     svd = SVD()
     svd.load_data(filename=filename, sep='::', format={'col':0, 'row':1, 'value':2, 'ids': int}) 
         # About format parameter:
-        #   'row': 1 -> Rows in matrix come from column 1 in ratings.dat file
-        #   'col': 0 -> Cols in matrix come from column 0 in ratings.dat file
-        #   'value': 2 -> Values (Mij) in matrix come from column 2 in ratings.dat file
+        #   'row': 1 -> Rows in matrix come from second column in ratings.dat file
+        #   'col': 0 -> Cols in matrix come from first column in ratings.dat file
+        #   'value': 2 -> Values (Mij) in matrix come from third column in ratings.dat file
         #   'ids': int -> Ids (row and col ids) are integers (not strings)
+
+Split a dataset (train and test):
 
 .. code-block:: python
 
@@ -43,11 +49,13 @@ Loading data
     svd = SVD()
     svd.set_data(train)
 
+Loading a file, executing external SVDLIBC program, and creating an SVD instance *svd*:
+
 .. code-block:: python
 
     from recsys.utils.svdlibc import SVDLIBC
     svdlibc = SVDLIBC('./data/movielens/ratings.dat')
-    svdlibc.to_sparse_matrix(sep='::', format={'col':0, 'row':1, 'value':2, 'ids': int})
+    svdlibc.to_sparse_matrix(sep='::', format={'col':0, 'row':1, 'value':2, 'ids': int}) # Convert to sparse matrix format [http://tedlab.mit.edu/~dr/SVDLIBC/SVD_F_ST.html]
     svdlibc.compute(k=100)
     svd = svdlibc.export()
 
