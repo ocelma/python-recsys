@@ -43,6 +43,14 @@ Loading data
     svd = SVD()
     svd.set_data(train)
 
+.. code-block:: python
+
+    from recsys.utils.svdlibc import SVDLIBC
+    svdlibc = SVDLIBC('./data/movielens/ratings.dat')
+    svdlibc.to_sparse_matrix(sep='::', format={'col':0, 'row':1, 'value':2, 'ids': int})
+    svdlibc.compute(k=100)
+    svd = svdlibc.export()
+
 Computing
 ~~~~~~~~~
 
