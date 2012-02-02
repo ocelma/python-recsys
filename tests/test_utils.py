@@ -1,6 +1,7 @@
 import os
 from nose import with_setup
 from nose.tools import assert_equal, assert_not_equal, assert_raises, assert_true
+from operator import itemgetter
 
 import recsys.algorithm
 recsys.algorithm.VERBOSE = True
@@ -24,6 +25,15 @@ def test_compute_svd():
     svdlibc.compute()
 
 def test_export():
+    global svd, MOVIEID
     svd = svdlibc.export()
     MOVIEID = 1
-    assert_true(len(svd.similar(MOVIEID)) == 10)
+
+def test_similar():
+    similars = svd.similar(MOVIEID)
+    assert_true(len(similars) == 10)
+    assert_true(588 in map(itemgetter(0), similars))
+
+def test_similarity():
+    MOVIEID2 = 3114
+    assert_equal(round(svd.similarity(MOVIEID, MOVIEID2), 4), round(0.84099896392054219, 4))
