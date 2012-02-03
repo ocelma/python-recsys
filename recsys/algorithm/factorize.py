@@ -91,7 +91,10 @@ class SVD(Algorithm):
         for line in zip.open('README'):
             data = line.strip().split('\t')
             options[data[0]] = data[1]
-        k = int(options['k'])
+        try:
+            k = int(options['k'])
+        except:
+            k = 100 #TODO: nasty!!!
 
         # Load U, S, and V
         """
