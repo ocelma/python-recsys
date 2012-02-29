@@ -97,8 +97,8 @@ class Evaluation(object):
         """
         Computes the evaluation using the loaded ground truth and test lists
         """
-        if not self._ground_truth:
+        if len(self._ground_truth) == 0:
             raise ValueError('Ground Truth dataset is empty!')
-        if not self._test:
+        if len(self._test) == 0:
             raise ValueError('Test dataset is empty!')
 
