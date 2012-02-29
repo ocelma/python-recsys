@@ -75,20 +75,20 @@ Last.fm
 
 .. code-block:: python
 
-    $ cd /tmp/
-    $ wget http://mtg.upf.edu/static/datasets/last.fm/lastfm-dataset-360K.tar.gz
-    $ tar xvzf lastfm-dataset-360K.tar.gz 
+    cd /tmp/
+    wget http://mtg.upf.edu/static/datasets/last.fm/lastfm-dataset-360K.tar.gz
+    tar xvzf lastfm-dataset-360K.tar.gz 
 
 2. (Faster way) Download this `tar file`_ that already contains the matrix.dat (~17M lines), and copy the 3 files to /tmp
 
-.. _`tar file`: http://csc.media.mit.edu/docs/divisi2/install.html
+.. _`tar file`: http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm360K-svd-example.tar.gz
 
 
 .. code-block:: python
 
-    $ cd /tmp/
-    $ wget http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm360K-svd-example.tar.gz
-    $ tar xvzf lastfm360K-svd-example.tar.gz
+    cd /tmp/
+    wget http://www.dtic.upf.edu/~ocelma/MusicRecommendationDataset/lastfm360K-svd-example.tar.gz
+    tar xvzf lastfm360K-svd-example.tar.gz
 
 and then just copy these 10 lines of code!
   
