@@ -1,6 +1,6 @@
 from nose import with_setup
 from nose.tools import assert_equal, assert_not_equal, assert_raises, assert_true
-from numpy import nan
+from numpy import nan, array
 
 from operator import itemgetter
 
@@ -108,6 +108,10 @@ class TestPrediction(Test):
         rmse.load(GT, self.TEST_DATA)
         assert_raises(ValueError, rmse.compute)
 
+    def test_PRED_RMSE_numpy_array(self):
+        rmse = RMSE()
+        rmse.load(array(self.GT_DATA), array(self.TEST_DATA))
+        assert(rmse.compute(), 0.891067)
 
 # TEST_DECISION P/R/F1
 class TestDecision(Test):
