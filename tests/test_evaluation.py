@@ -6,7 +6,7 @@ from operator import itemgetter
 
 from recsys.evaluation.prediction import MAE, RMSE, Pearson
 from recsys.evaluation.decision import PrecisionRecallF1
-from recsys.evaluation.ranking import KendallTau, SpearmanRho, MeanReciprocalRank, ReciprocalRank
+from recsys.evaluation.ranking import KendallTau, SpearmanRho, MeanReciprocalRank, ReciprocalRank, AveragePrecision, MeanAveragePrecision
 
 class Test(object):
     def __init__(self):
@@ -309,4 +309,39 @@ class TestRanking(Test):
         QUERY = 'invented'
         mrr.load(self.GT_DECISION, QUERY)
         assert_equal(mrr.compute(), 0.0)
+
+    #mAP tests
+    def test_RANK_AveragePrecision(self):
+        GT_DECISION = [1, 2, 4]
+        TEST_DECISION = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        avgp = AveragePrecision()
+        avgp.load(GT_DECISION, TEST_DECISION)
+        assert_equal(round(avgp.compute(), 4), 0.9167)
+
+        GT_DECISION = [1, 4, 8]
+        avgp = AveragePrecision()
+        avgp.load(GT_DECISION, TEST_DECISION)
+        assert_equal(round(avgp.compute(), 4), 0.625)
+
+        GT_DECISION = [3, 5, 9, 25, 39, 44, 56, 71, 89, 123]
+        TEST_DECISION = [123, 84, 56, 6, 8, 9, 511, 129, 187, 25, 38, 48, 250, 113, 3]
+        avgp = AveragePrecision()
+        avgp.load(GT_DECISION, TEST_DECISION)
+        assert_equal(avgp.compute(), 0.58)
+
+    #mAP tests
+    def test_RANK_MeanAveragePrecision(self):
+        mavgp = MeanAveragePrecision()
+        GT_DECISION = [1, 2, 4]
+        TEST_DECISION = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        mavgp.load(GT_DECISION, TEST_DECISION)
+
+        GT_DECISION = [1, 4, 8]
+        mavgp.load(GT_DECISION, TEST_DECISION)
+
+        GT_DECISION = [3, 5, 9, 25, 39, 44, 56, 71, 89, 123]
+        TEST_DECISION = [123, 84, 56, 6, 8, 9, 511, 129, 187, 25, 38, 48, 250, 113, 3]
+        mavgp.load(GT_DECISION, TEST_DECISION)
+
+        assert_equal(mavgp.compute(), 0.707222)
 
