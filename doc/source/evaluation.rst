@@ -314,7 +314,7 @@ Recommendations that occur earlier in the top--n list are weighted higher than t
 Example
 ~~~~~~~
 
-Computing average Precision (:math:`AP`) for one query:
+Computing average Precision (:math:`AP`) for one query, :math:`q`:
 
 .. code-block:: python
 
@@ -323,13 +323,13 @@ Computing average Precision (:math:`AP`) for one query:
     ap = AveragePrecision()
 
     GT = [1,2,3,4,5]
-    RETRIEVED = [1,3,5]
-    ap.load(GT, RETRIEVED)
+    q = [1,3,5]
+    ap.load(GT, q)
     ap.compute() # returns 1.0
 
     GT = [1,2,3,4,5]
-    RETRIEVED = [99,3,5]
-    ap.load(GT, RETRIEVED)
+    q = [99,3,5]
+    ap.load(GT, q)
     ap.compute() # returns 0.5833335
 
 Mean Average Precision for a list of retrieved results :math:`Q`:
@@ -339,9 +339,9 @@ Mean Average Precision for a list of retrieved results :math:`Q`:
     from recsys.evaluation.ranking import MeanAveragePrecision 
 
     GT = [1,2,3,4,5]
-    RESULTS_RETRIEVED = [[1,3,5], [99,3,5], [3,99,1]]
+    Q = [[1,3,5], [99,3,5], [3,99,1]]
     Map = MeanAveragePrecision()
-    for RETRIEVED in RESULTS_RETRIEVED:
-        Map.load(GT, RETRIEVED)
+    for q in Q:
+        Map.load(GT, q)
     Map.compute() # returns 0.805556
 
