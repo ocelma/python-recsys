@@ -4,7 +4,7 @@ Installation
 Dependencies
 ~~~~~~~~~~~~
 
-**python-recsys** is build on top of `Divisi2`_, with csc-pysparse (Divisi2 also requires `NumPy`_).
+**python-recsys** is build on top of `Divisi2`_, with csc-pysparse (Divisi2 also requires `NumPy`_, and uses Networkx).
 
 .. _`Divisi2`: http://csc.media.mit.edu/docs/divisi2/install.html
 .. _`NumPy`: http://numpy.scipy.org
@@ -19,14 +19,14 @@ To install the dependencies do something like this (Ubuntu):
 
     sudo apt-get install python-scipy python-numpy
     sudo apt-get install python-pip
-    sudo pip install csc-pysparse divisi2
+    sudo pip install csc-pysparse networkx divisi2
 
     # If you don't have pip installed 
     # (i.e. the last command, sudo pip install divisi2 csc-pysparse, fails)
     # then do:
     # sudo easy_install csc-pysparse
+    # sudo easy_install networkx
     # sudo easy_install divisi2
-
 
 .. note::
     If you get an error like this one while compiling csc-pysparse:
