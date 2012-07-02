@@ -86,6 +86,7 @@ class MeanReciprocalRank(Evaluation):
             return self._rr[-1]
         return round(mean(self.get_reciprocal_rank_results()), ROUND_FLOAT)
 
+"""
 from recsys.evaluation.decision import PrecisionRecallF1
 class PrecisionAtK(Evaluation):
     def __init__(self):
@@ -101,6 +102,7 @@ class PrecisionAtK(Evaluation):
             precision = len(hit_set) / float(len(self._test)) #TP/float(TP+FP)
         except ValueError:
             return 0.0
+"""
 
 class AveragePrecision(Evaluation):
     def __init__(self):
@@ -126,6 +128,9 @@ class AveragePrecision(Evaluation):
         super(AveragePrecision, self).compute()
         from recsys.evaluation.decision import PrecisionRecallF1
 
+        if not isinstance(self._test, list):
+            self._test = [self._test]
+
         PRF1 = PrecisionRecallF1()
         p_at_k = []
         hits = 0
@@ -138,6 +143,8 @@ class AveragePrecision(Evaluation):
             else:
                 p = 0.0
             p_at_k.append(p)
+        if not hits:
+            return 0.0
         return sum(p_at_k)/hits
 
 class MeanAveragePrecision(Evaluation):
