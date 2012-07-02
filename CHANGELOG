@@ -1,14 +1,19 @@
-===========
-Version 0.2
-===========
+See: https://github.com/ocelma/python-recsys/commits/master
+
+2011-05-09
+    * Added MAP (Mean Average Precision) metric and (nose)tests
+
+2011-02-01
+    * Added external SVDLIBC executable in recsys.utils
+    * Load larger matrices using SVDLIBC instead of divisi2
+    * SVDLIBC examples
+
+2011-01-23
+    * Improved(?) K-Means clustering and added a test
 
 2011-01-12
     * added recsys.utils: compute SVDLIBC [http://tedlab.mit.edu/~dr/SVDLIBC/], and import U,S,V to recsys.algorithm.factorize.SVD
     * added new test_utils.py to check SVDLIBC to recsys import
-
-===========
-Version 0.1
-===========
 
 2011-11-14
     * add_tuple raises more exceptions, if tuple format not correct
