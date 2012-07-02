@@ -206,6 +206,8 @@ Using explicit ranking information:
     spearman.load(GT_RANKING, TEST_RANKING)
     spearman.compute() #returns 0.5
 
+Rank-based correlation for ratings:
+
 .. code-block:: python
 
     from recsys.evaluation.ranking import SpearmanRho 
@@ -240,6 +242,8 @@ Using explicit ranking information:
     kendall = KendallTau()
     kendall.load(GT_RANKING, TEST_RANKING)
     kendall.compute() #returns 0.4
+
+Rank-based correlation for ratings:
 
 .. code-block:: python
 
@@ -288,4 +292,56 @@ Mean reciprocal rank for a list of queries :math:`Q`:
         shuffle(GT_DECISION) #Just to "generate" a different GT each time...
         mrr.load(GT_DECISION, QUERY)
     mrr.compute() #in my case, returned 0.45832
+
+Mean Average Precision
+---------------------
+[http://en.wikipedia.org/wiki/Mean_average_precision]
+
+Mean Average Precision (:math:`MAP`) is defined as:
+    
+.. math::                           
+    \text{MAP} = \frac{\sum_{q=1}^Q AP(q)}{Q}
+
+where :math:`Q` is the number of queries, and :math:`Average Precision` (AP) [http://en.wikipedia.org/wiki/Mean_average_precision#Average_precision] equals:
+
+.. math::
+    \text{AP} = \frac{\sum_{k=1}^n (P(k) \times rel(k))}{\mbox{number of relevant documents}}
+
+where :math:`P(k)` is Precision at top-k, and :math:`rel(k)` is an indicator function equaling 1 if the item at rank  is a relevant document, and zero otherwise.
+
+Recommendations that occur earlier in the top--n list are weighted higher than those that occur later in the list.
+
+Example
+~~~~~~~
+
+Computing average Precision (:math:`AP`) for one query:
+
+.. code-block:: python
+
+    from recsys.evaluation.ranking import AveragePrecision
+
+    ap = AveragePrecision()
+
+    GT = [1,2,3,4,5]
+    RETRIEVED = [1,3,5]
+    ap.load(GT, RETRIEVED)
+    ap.compute() # returns 1.0
+
+    GT = [1,2,3,4,5]
+    RETRIEVED = [99,3,5]
+    ap.load(GT, RETRIEVED)
+    ap.compute() # returns 0.5833335
+
+Mean Average Precision for a list of retrieved results :math:`Q`:
+
+.. code-block:: python
+
+    from recsys.evaluation.ranking import MeanAveragePrecision 
+
+    GT = [1,2,3,4,5]
+    RESULTS_RETRIEVED = [[1,3,5], [99,3,5], [3,99,1]]
+    Map = MeanAveragePrecision()
+    for RETRIEVED in RESULTS_RETRIEVED:
+        Map.load(GT, RETRIEVED)
+    Map.compute() # returns 0.805556
 
