@@ -57,14 +57,21 @@ Example
 
     from recsys.algorithm.factorize import SVD
     svd = SVD()
-    svd.load_data(filename='./data/movielens/ratings.dat', sep='::', format={'col':0, 'row':1, 'value':2, 'ids': int})
+    svd.load_data(filename='./data/movielens/ratings.dat', 
+                sep='::', 
+                format={'col':0, 'row':1, 'value':2, 'ids': int})
 
 2. Compute Singular Value Decomposition (SVD), M=U Sigma V^t:
 
 ::
 
     k = 100
-    svd.compute(k=k, min_values=10, pre_normalize=None, mean_center=True, post_normalize=True, savefile='/tmp/movielens')
+    svd.compute(k=k, 
+                min_values=10, 
+                pre_normalize=None, 
+                mean_center=True, 
+                post_normalize=True, 
+                savefile='/tmp/movielens')
 
 3. Get similarity between two movies:
 
