@@ -22,7 +22,7 @@ To install the dependencies do something like this (Ubuntu):
     sudo pip install csc-pysparse networkx divisi2
 
     # If you don't have pip installed 
-    # (i.e. the last command, sudo pip install divisi2 csc-pysparse, fails)
+    # (i.e. the last command, sudo pip install, fails)
     # then do:
     # sudo easy_install csc-pysparse
     # sudo easy_install networkx
