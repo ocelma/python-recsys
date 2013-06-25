@@ -1,7 +1,7 @@
 __name__ = "recsys"
 __doc__ = "python-recsys: A simple python recommender system"
 __author__ = "Oscar Celma"
-__version__ = "0.1"
+__version__ = "0.2"
 __license__ = "GPL"
 __maintainer__ = "Oscar Celma"
 __email__ = "ocelma@gmail.com"
