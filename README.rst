@@ -12,7 +12,7 @@ Dependencies
 
 **python-recsys** is build on top of `Divisi2`_, with csc-pysparse (Divisi2 also requires `NumPy`_, and uses Networkx).
 
-.. _`Divisi2`: http://csc.media.mit.edu/docs/divisi2/install.html
+.. _`Divisi2`: https://github.com/commonsense/divisi2
 .. _`NumPy`: http://numpy.scipy.org
 
 **python-recsys** also requires `SciPy`_.
